@@ -8,3 +8,4 @@ site: bookdown::bookdown_site
 
 # Introduction
 
+Focus on Covid19 Data. Research the relationship between Covid18, election polling and health care.
