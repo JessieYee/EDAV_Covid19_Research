@@ -1,6 +1,7 @@
 --- 
-title: "YOUR TITLE HERE"
-author: "YOUR NAMES HERE"
+title: Covid19 Research and Visualization
+author: Xiaoyu Su, Jiongxin Ye, Hanxiao Zhang,Lei Guo
+
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
