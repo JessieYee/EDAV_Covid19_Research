@@ -1,4 +1,4 @@
-This is a template for the EDAV final project. It is based on the template created with *File, New Project..., New Directory, Book Project using bookdown* in RStudio. 
+This is the source of final project for EDAV Group 11: Covid 19 research
 
 
 ## ABSOLUTE ESSENTIALS
