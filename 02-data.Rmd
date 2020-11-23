@@ -1,2 +1,40 @@
 # Data sources
 
+## 4.1 Covid-19 Datasets
+
+Xiaoyu is responsible for collecting the Covid-19-US data and the US 2020 election data.
+The dataset is downloaded from the JHU CSSE COVID-19 Dataset github repository, which contains up-to-date Covid-19 data for the United States as well as the world. This data repository collected data from numerous other sources such as WHO, ECDC, US CDC, BNO News, and is updated every day.
+
+For the purpose of this project, we will be using the covid_19_confirmed_US dataset and the covid_19_death_US dataset.
+
+```{r}
+urlfile <- 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv'
+
+confirmed_US <- read.csv(urlfile)
+
+# display the first 12 columns
+head(confirmed_US[,1:12])
+
+# shape of the data frame
+dim(confirmed_US)
+```
+To summarize, the dataset contains 3340 rows and 316 columns. We can see that the dataset contains some repetitive information and some ids not useful for our tasks. We can consider dropping those columns. The good thing about this dataset is that it does not contain any missing values.
+
+The first 10 columns contain information that identify a specific county and all the other columns contain the total confirmed cases up until a specific date. 
+We summarize the description of the useful columns and their data types below:
+
+FIPS: Federal Information Processing Standards code that uniquely identifies counties within the USA.
+
+Admin2: County Name; string
+
+Province_State: State Name; string
+
+Lat and Long_ : Latitude and longitude; float 
+
+Combined_Key: (County name, State name, US); string
+
+X1.22.20: The total confirmed cases up until 1/22/2020; int
+
+All the other columns has a column name similar to this last column, each represents the total number of cases up until that specific day. The dates are sorted in order.
+
+The covid_19_death_US dataset has the same format except that the numbers representing each day are total deaths rather than confirmed cases.
