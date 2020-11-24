@@ -1,0 +1,143 @@
+---
+author: Team 11 
+title: "EDAV Fall 2020 PSet 4"
+output: html_document
+---
+
+```{r include=FALSE}
+library(easypackages)
+libraries('tidyverse')
+libraries('robotstxt','rvest')
+```
+
+This assignment is designed to help you get started on the final project. Be sure to review the final project instructions (https://edav.info/project.html).
+    
+### 1. The Team
+
+[8 points]
+
+a) Who's on the team? (Include names and UNIs)
+
+Xiaoyu Su (xs2420)
+Jiongxin Ye (jy3114)
+Hanxiao Zhang (hz2660)
+Lei Guo (lg3115)
+
+
+b) How do you plan to divide up the work? (Grading is on a group basis. The point of asking is to encourage you to think about this and design a plan.)
+
+We have three data sets, the covid-19 data, the president poll data and the state&local government health spend data.
+
+Searching an appropriate data set -- the covid data and president poll data: Xiaoyu, Hanxiao and Jiongxin.
+Jiongxin is in charge of github. Xiaoyu is in charge of Data sourcing. Lei is in charge of data transformation. Hanxiao built this team, in charge of three parts -- 1,2 and 6 of Pset4 and found the state government health spend data. 
+
+
+c) What is your plan for managing the git/GitHub workflow? That is, who will merge pull requests? How will you attempt to avoid conflicts? How will you communicate?
+
+Jiongxin built the github page and she will merge the following requests. Everyone else pull the request to their own branch, therefore we can avoid the conflicts. 
+We schedule a zoom meeting and communicate some simple ideas through social media called Wechat, and discuss the big idea and tech difficulties during zoom meeting. In addition, we will post our formal idea and changes into github as a record for better communication. 
+
+### 2. The Questions
+
+[10 points]
+
+List three questions that you hope you will be able to answer from your research. (It's ok if these change as your work progresses.)
+
+a)  The comparisons of covid-19 confirmation rate and mortality rate among each state within the US. 
+  We propose that each state will have different rates of confirmation and moratlity. For example, New York and California were the two states with the most cases at the very beginning and is becoming the less severe states afterwards. This question is the basis of our following two research questions. 
+  
+b)  The relationship between election polls and the covid-19 confirmed rate and mortality rate. 
+  We think the states that prone to support Biden would have lower confirmed rate and a non-significantly different mortality rate compared with the states that support Trump more. Since people in the states that support Biden are more willing to wear masks and may be more rational for election gathering events, which can reduce the speed of the spread of covid-19. 
+  
+c)  The relationship of the state&local government health spending and the mortality and recovered rate. 
+  We think there would be a negative relationship between the health spending and the severity of covid-19. But it may be the reverse or has no difference due to some other reasons, like the different efficiency levels of administration among states, the different demorgraphic patterns etc. 
+  It is very interesting and useful to see the relationship since the relationship may be helpful for the precautions of future pandemic. 
+
+### 3. GitHub repo
+
+[8 points]
+
+a) Set up your final project repository following the EDAVproject template. Provide the link to the repo.
+
+https://github.com/JessieYee/EDAV_Covid19_Research
+
+b) Make sure that all team members have write access to the repository and have practiced making contributions. Provide a link to the contributors page of your repository showing that all team members have made contributions to the repo (Note that we do not have the ability to see who has write access, only contributors):
+
+https://github.com/JessieYee/EDAV_Covid19_Research/graphs/contributors
+
+
+### 4. Data Sources
+
+Xiaoyu is responsible for collecting the Covid-19-US data and the US 2020 election data and Hanxiao is responsible for collecting the government health expenditure data.
+
+### 4.1 Covid-19 Datasets
+
+The dataset is downloaded from the JHU CSSE COVID-19 Dataset github repository, which contains up-to-date Covid-19 data for the United States as well as the world. This data repository collected data from numerous other sources such as WHO, ECDC, US CDC, BNO News, and is updated every day.
+
+For the purpose of this project, we will be using the covid_19_confirmed_US dataset and the covid_19_death_US dataset.
+
+```{r}
+urlfile <- 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv'
+
+confirmed_US <- read.csv(urlfile)
+
+# display the first 12 columns
+head(confirmed_US[,1:12])
+
+# shape of the data frame
+dim(confirmed_US)
+```
+To summarize, the dataset contains 3340 rows and 316 columns. We can see that the dataset contains some repetitive information and some ids not useful for our tasks. We can consider dropping those columns. The good thing about this dataset is that it does not contain any missing values.
+
+The first 10 columns contain information that identify a specific county and all the other columns contain the total confirmed cases up until a specific date. 
+We summarize the description of the useful columns and their data types below:
+
+FIPS: Federal Information Processing Standards code that uniquely identifies counties within the USA.
+
+Admin2: County Name; string
+
+Province_State: State Name; string
+
+Lat and Long_ : Latitude and longitude; float 
+
+Combined_Key: (County name, State name, US); string
+
+X1.22.20: The total confirmed cases up until 1/22/2020; int
+
+All the other columns has a column name similar to this last column, each represents the total number of cases up until that specific day. The dates are sorted in order.
+
+The covid_19_death_US dataset has the same format except that the numbers representing each day are total deaths rather than confirmed cases.
+
+### 4.2 2020 Election Data
+We are going to scrap https://www.nbcnews.com/ for the election voting data on both county and state level. First we can check whether it is allowed to scrap the pages. 
+```{r, warning=FALSE, message=FALSE}
+paths_allowed('https://www.nbcnews.com/politics/2020-elections/president-results?icid=election_nav')
+```
+
+We'll use the scraped data to form a dataset with the following columns: Number of Votes for the Democratic Party, Percentage of Votes for the Democratic Party, Number of Votes for the Republican Party, Percentage of Votes for the Republican Party. This dataset would have about 3000 rows (the same as the number of counties) and there will be no missing values.
+
+### 4.3 2018 US State and Local Government Finances Data
+The data concerning US state and local government finances can be downloaded from https://www.census.gov/data/datasets/2018/econ/local/public-use-datasets.html. The data from 2018 is the most recent data we can find that addresses health and hospital expenditure for each states. The dataset is currently messy and is in need of some heavy cleaning. We expect the dataset to contain the following columns:
+
+1. State Name 
+1. State and local government amount on Health per capita
+2. State and local government amount on Hospitals per capita
+
+The dataset would be cleaned and there will be no missing value.
+
+
+### 5. Data Transformation
+
+[8 points]
+
+Write a draft of the [Data Transformation chapter](https://edav.info/project#report-format)
+
+
+### 6. Missing Values
+
+[8 points]
+
+We have 3 datasets, the covid-19 data, the 2020 election poll data and the State and Local government health expenditure data.
+There is no missing value for these 3 datasets.
+
+
