@@ -1,6 +1,6 @@
 # Data sources
 
-## 4.1 Covid-19 Datasets
+## Covid-19 Datasets
 
 Xiaoyu is responsible for collecting the Covid-19-US data and the US 2020 election data.
 The dataset is downloaded from the JHU CSSE COVID-19 Dataset github repository, which contains up-to-date Covid-19 data for the United States as well as the world. This data repository collected data from numerous other sources such as WHO, ECDC, US CDC, BNO News, and is updated every day.

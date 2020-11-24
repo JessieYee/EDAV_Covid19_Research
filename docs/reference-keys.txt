@@ -5,3 +5,13 @@ missing-values
 results
 interactive-component
 conclusion
+covid-19-datasets
+the-team
+the-questions
+github-repo
+data-sources-1
+covid-19-datasets-1
+election-data
+us-state-and-local-government-finances-data
+data-transformation-1
+missing-values-1

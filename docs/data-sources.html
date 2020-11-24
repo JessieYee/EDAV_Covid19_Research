@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Data sources | Covid19 Research and Visualization</title>
-  <meta name="description" content="Chapter 2 Data sources | Covid19 Research and Visualization" />
+  <title>Chapter 2 Data sources | Covid 19 Research and Visualization</title>
+  <meta name="description" content="Chapter 2 Data sources | Covid 19 Research and Visualization" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Data sources | Covid19 Research and Visualization" />
+  <meta property="og:title" content="Chapter 2 Data sources | Covid 19 Research and Visualization" />
   <meta property="og:type" content="book" />
   
   
@@ -16,12 +16,12 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Data sources | Covid19 Research and Visualization" />
+  <meta name="twitter:title" content="Chapter 2 Data sources | Covid 19 Research and Visualization" />
   
   
   
 
-<meta name="author" content="Xiaoyu Su, Jiongxin Ye, Hanxiao Zhang,Lei Guo" />
+<meta name="author" content="Xiaoyu Su, Jiongxin Ye, Hanxiao Zhang, Lei Guo" />
 
 
 <meta name="date" content="2020-11-23" />
@@ -73,12 +73,24 @@
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
-<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a></li>
+<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a><ul>
+<li class="chapter" data-level="2.1" data-path="data-sources.html"><a href="data-sources.html#covid-19-datasets"><i class="fa fa-check"></i><b>2.1</b> Covid-19 Datasets</a></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a></li>
 <li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a></li>
 <li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
-<li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
+<li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a><ul>
+<li class="chapter" data-level="7.0.1" data-path="conclusion.html"><a href="conclusion.html#the-team"><i class="fa fa-check"></i><b>7.0.1</b> 1. The Team</a></li>
+<li class="chapter" data-level="7.0.2" data-path="conclusion.html"><a href="conclusion.html#the-questions"><i class="fa fa-check"></i><b>7.0.2</b> 2. The Questions</a></li>
+<li class="chapter" data-level="7.0.3" data-path="conclusion.html"><a href="conclusion.html#github-repo"><i class="fa fa-check"></i><b>7.0.3</b> 3. GitHub repo</a></li>
+<li class="chapter" data-level="7.0.4" data-path="conclusion.html"><a href="conclusion.html#data-sources-1"><i class="fa fa-check"></i><b>7.0.4</b> 4. Data Sources</a></li>
+<li class="chapter" data-level="7.0.5" data-path="conclusion.html"><a href="conclusion.html#covid-19-datasets-1"><i class="fa fa-check"></i><b>7.0.5</b> 4.1 Covid-19 Datasets</a></li>
+<li class="chapter" data-level="7.0.6" data-path="conclusion.html"><a href="conclusion.html#election-data"><i class="fa fa-check"></i><b>7.0.6</b> 4.2 2020 Election Data</a></li>
+<li class="chapter" data-level="7.0.7" data-path="conclusion.html"><a href="conclusion.html#us-state-and-local-government-finances-data"><i class="fa fa-check"></i><b>7.0.7</b> 4.3 2018 US State and Local Government Finances Data</a></li>
+<li class="chapter" data-level="7.0.8" data-path="conclusion.html"><a href="conclusion.html#data-transformation-1"><i class="fa fa-check"></i><b>7.0.8</b> 5. Data Transformation</a></li>
+<li class="chapter" data-level="7.0.9" data-path="conclusion.html"><a href="conclusion.html#missing-values-1"><i class="fa fa-check"></i><b>7.0.9</b> 6. Missing Values</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -90,7 +102,7 @@
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Covid19 Research and Visualization</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Covid 19 Research and Visualization</a>
           </h1>
         </div>
 
@@ -100,7 +112,39 @@
             <section class="normal" id="section-">
 <div id="data-sources" class="section level1">
 <h1><span class="header-section-number">Chapter 2</span> Data sources</h1>
+<div id="covid-19-datasets" class="section level2">
+<h2><span class="header-section-number">2.1</span> Covid-19 Datasets</h2>
+<p>Xiaoyu is responsible for collecting the Covid-19-US data and the US 2020 election data.
+The dataset is downloaded from the JHU CSSE COVID-19 Dataset github repository, which contains up-to-date Covid-19 data for the United States as well as the world. This data repository collected data from numerous other sources such as WHO, ECDC, US CDC, BNO News, and is updated every day.</p>
+<p>For the purpose of this project, we will be using the covid_19_confirmed_US dataset and the covid_19_death_US dataset.</p>
+<pre><code>##        UID iso2 iso3 code3 FIPS  Admin2 Province_State Country_Region      Lat
+## 1 84001001   US  USA   840 1001 Autauga        Alabama             US 32.53953
+## 2 84001003   US  USA   840 1003 Baldwin        Alabama             US 30.72775
+## 3 84001005   US  USA   840 1005 Barbour        Alabama             US 31.86826
+## 4 84001007   US  USA   840 1007    Bibb        Alabama             US 32.99642
+## 5 84001009   US  USA   840 1009  Blount        Alabama             US 33.98211
+## 6 84001011   US  USA   840 1011 Bullock        Alabama             US 32.10031
+##       Long_         Combined_Key X1.22.20
+## 1 -86.64408 Autauga, Alabama, US        0
+## 2 -87.72207 Baldwin, Alabama, US        0
+## 3 -85.38713 Barbour, Alabama, US        0
+## 4 -87.12511    Bibb, Alabama, US        0
+## 5 -86.56791  Blount, Alabama, US        0
+## 6 -85.71266 Bullock, Alabama, US        0</code></pre>
+<pre><code>## [1] 3340  317</code></pre>
+<p>To summarize, the dataset contains 3340 rows and 316 columns. We can see that the dataset contains some repetitive information and some ids not useful for our tasks. We can consider dropping those columns. The good thing about this dataset is that it does not contain any missing values.</p>
+<p>The first 10 columns contain information that identify a specific county and all the other columns contain the total confirmed cases up until a specific date.
+We summarize the description of the useful columns and their data types below:</p>
+<p>FIPS: Federal Information Processing Standards code that uniquely identifies counties within the USA.</p>
+<p>Admin2: County Name; string</p>
+<p>Province_State: State Name; string</p>
+<p>Lat and Long_ : Latitude and longitude; float</p>
+<p>Combined_Key: (County name, State name, US); string</p>
+<p>X1.22.20: The total confirmed cases up until 1/22/2020; int</p>
+<p>All the other columns has a column name similar to this last column, each represents the total number of cases up until that specific day. The dates are sorted in order.</p>
+<p>The covid_19_death_US dataset has the same format except that the numbers representing each day are total deaths rather than confirmed cases.</p>
 
+</div>
 </div>
             </section>
 
