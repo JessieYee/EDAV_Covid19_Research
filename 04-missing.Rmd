@@ -1,1 +1,46 @@
 # Missing values
+
+```{r include=FALSE}
+library(dplyr)
+```
+
+## Checking missing value
+
+We want to check if there is any missing value in our covid_state data set
+```{r}
+library(dplyr)
+covid_state = readRDS("covid_state")
+covid_state[which(is.na(covid_state$`Biden Support Rate`)),]
+```
+We can find that Alaska and D.C have NA value for `support biden rate` variable. The county name for election data in D.C and Alaska are different from the covid_19 data. So we might loosing data when merging them together. 
+
+## Fixing the NA in dataset
+
+Because we want to know the election status for each state without any NA, we decide to calculate the support rate for Alaska and D.C by adding the data in election.
+
+```{r}
+election = readRDS("election")
+Alaska_Biden = sum(election[election$state =="Alaska",]$Biden)
+Alaska_Trump = sum(election[election$state =="Alaska",]$Trump)
+DC_Biden = sum(election[election$state =="District Of Columbia",]$Biden)
+DC_Trump = sum(election[election$state =="District Of Columbia",]$Trump)
+
+covid_state[2,7] = Alaska_Biden
+covid_state[2,8] = Alaska_Trump
+covid_state[2,9] = Alaska_Biden/(Alaska_Biden+Alaska_Trump)
+covid_state[2,10] = case_when(covid_state[2,9] > 0.5 ~ "Democratic", 
+                              covid_state[2,9]< 0.5 ~ "Republican")
+covid_state[9,7] = DC_Biden
+covid_state[9,8] = DC_Trump
+covid_state[9,9] = DC_Biden/(DC_Biden+DC_Trump)
+covid_state[9,10] = case_when(covid_state[9,9] > 0.5 ~ "Democratic", 
+                              covid_state[9,9]< 0.5 ~ "Republican")
+head(covid_state)
+```
+
+```{r}
+saveRDS(covid_state,file = "covid_state")
+```
+
+
+

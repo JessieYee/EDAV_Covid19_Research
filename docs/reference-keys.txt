@@ -15,3 +15,10 @@ election-data
 us-state-and-local-government-finances-data
 data-transformation-1
 missing-values-1
+library-package
+health-data
+covid-data
+merge-data
+election-data-1
+checking-missing-value
+fixing-the-na-in-dataset

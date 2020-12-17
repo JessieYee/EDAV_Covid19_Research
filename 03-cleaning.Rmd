@@ -1,1 +1,162 @@
 # Data transformation
+
+## Library Package
+```{r echo=TRUE}
+library(dplyr)
+library(readr)
+```
+
+
+## health data
+
+Firstly, we read the health data from cms government website.
+```{r echo=TRUE}
+read_health_data <- function() {
+  url = 'https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/NationalHealthExpendData/Downloads/resident-state-estimates.zip'
+  temp <- tempfile()
+  temp2 <- tempfile()
+  # download the zipfile 
+  download.file(url, temp)
+  # unzip the file 
+  unzip(zipfile = temp, exdir = temp2)
+  # read_csv, only select the state and 2014 column 
+  health_per_capita <- read_csv(file.path(temp2, "US_PER_CAPITA14.CSV")) %>% 
+    filter(`Item` == 'Personal Health Care ($)') %>% 
+    select('State_Name', 'Y2014') %>%
+    na.omit()
+  names(health_per_capita) = c("state", "2014")
+  return(health_per_capita)
+}
+
+health_data <- read_health_data()
+head(health_data)
+```
+
+## covid data
+
+Secondly, we read the covid_19 data before November 30, 2020 and change the column name to make it more readable.  
+```{r echo=TRUE}
+url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/"
+
+confirmed_df = read.csv(paste0(url, "time_series_covid19_confirmed_US.csv"))
+# colnames(confirmed_df) = gsub("X","", colnames(confirmed_df))
+death_df = read.csv(paste0(url, "time_series_covid19_deaths_US.csv"))
+# colnames(death_df) = gsub("X","", colnames(death_df))
+
+# function for transform covid time series data
+transform_confirmed <- function(df) {
+  info_col = df[,c("UID","Admin2","Province_State","Lat","Long_")]
+  Nov_30 = df["X11.30.20"]
+  df = cbind(info_col, Nov_30)
+  # rename columns 
+  ColName = c("UID","county","state","lat", "long", paste0('confirmed', "_Nov_30"))
+  for (i in 1:6){
+    names(df)[i] = paste(ColName[i])
+  }
+  return(df)
+}
+
+# population column is in the death time series data, use another method 
+transform_death <- function(df) {
+  info_col = df[,c("UID","Population")]
+  Nov_30 = df["X11.30.20"]
+  df = cbind(info_col, Nov_30)
+  # rename columns 
+  ColName = c("UID","population", paste0('death', "_Nov_30"))
+  for (i in 1:3){
+    names(df)[i] = paste(ColName[i])
+  }
+  return(df)
+}
+
+# transform the two dataframe for Nov 30th only
+confirmed_df_Nov_30 = transform_confirmed(confirmed_df)
+death_df_Nov_30 = transform_death(death_df)
+
+
+# merge confirmed and death by UID
+covid_merged = merge(confirmed_df_Nov_30, death_df_Nov_30, by = "UID") # check:3340 rows, 8 columns
+
+# add confirm_rate column
+covid_merged$confirmed_rate = covid_merged$confirmed_Nov_30 / covid_merged$population 
+# get death_rate: death / confirmed 
+#covid_merged$death_Nov_30 = as.numeric(covid_merged$death_Nov_30)
+covid_merged$death_rate = ifelse(covid_merged$confirmed_Nov_30>0, 
+                                 covid_merged$death_Nov_30/covid_merged$confirmed_Nov_30,
+                                 0)
+
+# if population == 0 remove this row
+covid_merged = covid_merged[covid_merged['population']!=0,]
+head(covid_merged)
+```
+
+## election data
+
+The last dataset we want to consider is the 2020 election data in USA. 
+
+```{r echo = TRUE}
+url_election = "https://raw.githubusercontent.com/JessieYee/EDAV_Covid19_Research/main/election2020.csv"
+
+election = read.csv(url_election)
+#election$Combined_Key = paste0(election$County, ", ", election$State, ", US")
+election[] <- lapply(election, gsub, pattern=',', replacement='')
+election["state"]<-lapply(election["state"], gsub, pattern='-', replacement=' ')
+election$Biden = as.numeric(election$Biden)
+election$Trump = as.numeric(election$Trump)
+election$Biden_support_rate = election$Biden / (election$Biden+election$Trump)
+head(election)
+```
+
+We generate new variable: Biden_support_rate to calculate the support rate of Biden. For Biden_support_rate>0.5, we can conclude that more than half of people in this state support Biden. For Biden_support_rate<0.5, we can conclude that more than half of people in this state support Trump. 
+
+
+## merge data
+
+1.  left join the covid_19 data and election
+
+```{r echo=TRUE}
+covid_merge_all <- merge(covid_merged, election, by=c("state","county"),all.x = TRUE,all.y = FALSE)
+
+covid_state = covid_merge_all %>% 
+  group_by(`state`) %>% 
+  summarize(`confirmed_Nov_30` = sum(confirmed_Nov_30),
+            `death_Nov_30` = sum(death_Nov_30),
+            `population` = sum(population),
+            `confirmed_rate` =`confirmed_Nov_30`/ `population`,
+            `death_rate` = ifelse('confirmed_Nov_30'>0, 
+                                  `death_Nov_30`/`confirmed_Nov_30`,
+                                  0),
+            `Biden` = sum(Biden,na.rm=TRUE),
+            `Trump` = sum(Trump,na.rm=TRUE),
+            `Biden Support Rate` = `Biden`/(`Biden` + `Trump`),
+  )
+
+covid_state <- covid_state %>% 
+  mutate(`Support Which Party` = case_when(covid_state$`Biden Support Rate` > 0.5 ~ "Democratic", 
+                                           covid_state$`Biden Support Rate` < 0.5 ~ "Republican"
+  ))
+covid_state = merge(covid_state, health_data, by = "state")
+head(covid_state)
+```
+We separate the votes to two groups: support Democratic Party and support Republican Party by checking the `Biden Support Rate`. 
+
+2. Merge new data frame: death_per_100 with covid_state data
+```{r echo = TRUE}
+death_per_100 = covid_merge_all %>% 
+  group_by(`state`) %>% 
+  summarize(
+    `death_Nov_30` = sum(death_Nov_30),
+    `population` = sum(population),
+    `death_per_100` = `death_Nov_30`/`population`*100) %>%
+  select(`state`, `death_per_100`)
+covid_state = merge(covid_state, death_per_100, by='state')
+covid_state$death_per_1M = covid_state$death_per_100 * 10000
+head(covid_state)
+```
+
+We create a new column: death per 100 by calculating the death case divided by population.
+
+```{r}
+saveRDS(covid_state, file = "covid_state")
+saveRDS(election, file = "election")
+```
