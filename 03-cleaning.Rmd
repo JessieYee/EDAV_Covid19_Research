@@ -24,7 +24,7 @@ read_health_data <- function() {
     filter(`Item` == 'Personal Health Care ($)') %>% 
     select('State_Name', 'Y2014') %>%
     na.omit()
-  names(health_per_capita) = c("state", "2014")
+  names(health_per_capita) = c("state", "health_cost_per_captia")
   return(health_per_capita)
 }
 
@@ -122,8 +122,6 @@ confirmed_TS <- confirmed_df %>% select(Combined_Key,UID,Province_State, c(`X1.2
 death_TS <- death_df %>% select(Combined_Key, UID,Province_State, Population, c(`X1.22.20`:`X11.30.20`))
 confirmed_TS_merge = merge(confirmed_df, death_df%>%select(UID, Population), by = "UID")
 confirmed_TS_merge = confirmed_TS_merge[confirmed_TS_merge['Population'] != 0, ]
-head(confirmed_TS)
-head(death_TS)
 ```
 
 

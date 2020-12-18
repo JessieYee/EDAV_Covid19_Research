@@ -22,10 +22,10 @@ death_TS = readRDS("death_TS")
 covid_state = readRDS("covid_state")
 covid_merge_all = readRDS("covid_merge_all")
 confirmed_TS_merge = readRDS("confirmed_TS_merge")
-head(confirmed_TS)
-head(death_TS)
+election = readRDS("election")
 ```
-## Time Series Plot for State Covid Confirmed and Death Cases 
+
+## Time Series Plots for State Covid Confirmed and Death Cases 
 
 ```{r, warning=FALSE, message=FALSE} 
 get_confirmed_num_TS <- function(confirmed_TS) {
@@ -51,8 +51,15 @@ plot_ly(x = fct_inorder(confirmed_num_TS$Date),
         type = 'scatter', mode = 'lines', 
         color = confirmed_num_TS$Province_State) %>% 
         layout(title = "State Confirmed Cases Time Series Data")
+```
 
-#--------------------------------------------
+For most of the states in November, the number of confirmation cases is between 0 to 0.4 million. 
+The confirmed cases of COVID-19 along the time is like exponential growth for Texas, California, Florida and Illinois, with 0.7M to 1.3M confirmation cases, which are the states with the highest confirmation cases currently. Other states look more like a S-shaped curve. But when zooming the graph out, we can find that starting from November, the cases are showing as an exponential growth again.
+
+There is a cross among the first outbreak states and the later outbreak states in June and July. After these months, California, Texas, Florida and Illinois have a higher exponential rate than the first outbreak states NJ and NY. The reason why NY and NJ got first breakout may be due to the highest density of population and a busier transportation system.
+
+
+```{r}
 get_death_num_TS <- function(death_TS) {
   state_death_TS = death_TS %>% 
   group_by(Province_State) %>%
@@ -75,7 +82,14 @@ plot_ly(x = fct_inorder(death_num_TS$Date),
         layout(title = "State Death Cases Time Series Data")
 ```
 
-## Time Series Plot for State Covid Confirmed and Death Rate 
+The death cases' patterns are similar as the confirmation cases', excluding the fact that NY, NJ reversed the position with Texas, California, Florida and Illinois. The Death rate of NY is always the highest, this may be due to the shortage of medical resources and lack of treatment experience at the first breakout and death rate is not reversible. 
+
+For most of the states in November, the number of death cases is between 0 to 10k. 
+In November, NY has the highest death cases with 35k, and then Texas, California, Florida and NJ have around 17k. Most of other states have S-shaped curve. 
+When zooming the graph out, we can find that starting from November, the cases are showing an exponential growth again.
+
+
+## Time Series Plots for State Covid Confirmed Rate and Death Rate 
 
 ```{r, warning=FALSE, message=FALSE} 
 
@@ -105,8 +119,16 @@ plot_ly(x = fct_inorder(confirmed_rate_TS$Date),
         type = 'scatter', mode = 'lines',
         color = confirmed_rate_TS$Province_State) %>%
         layout(title = "State Confirmed Rate Time Series Data")
+```
 
-## ----------------------------------------------
+Observe that the states that got the first outbreak, like New York and New Jersey, showed a slow growth curve at a later time. But the states that didn't get a severe situation at first, growed in a more scary way at a later time, like North Dakota and South Dakota. This may due to the guarding down during the good performance at the first outbreak period.  
+
+We thought California had the highest confirmation rate by Nov 30th since it has the highest confirmation cases. However, we just found that North Dakota and South Dakota got much worse confirmation rate with a smaller population. You can compare the North Dakota to California by clicking on the two states with the interactive Plotly plots to see these two only in one graph together.
+
+In addition, by observing the growth curve, we found that most states did a good job on controlling the confirmation rates from May to September with lockdown policies. But approaching the vote period October and November, the confirmation rate went back to exponential growth again and was out of control for most of the states, even for New York. The ignorance of the covid during the selection period maybe the reason why this phenomenon occurs. 
+
+
+```{r}
 # Death rate
 get_death_rate_TS <- function(death_TS) {
   state_death_TS = death_TS %>% 
@@ -133,6 +155,11 @@ plot_ly(x = fct_inorder(death_rate_TS$Date),
         color = death_rate_TS$Province_State) %>% 
         layout(title = "State Death Rate Time Series Data")
 ```
+
+The most shocking finding is that New York and New Jersey has the highest death rates among all the states even after the first outbreak, but they have almost the best medical equipment and resources. However, considering the low confirmation rate of these two states, that doesn't mean that patients die more. On the contrary, we found that the slopes of these two states are lower than other states in the 2nd and 3rd outbreak until November.
+
+The current high death rate of NY and NJ is highly likely the accumulated results from the first outbreak when the medical resources are lacking and the production of medical resources' capacity didn't catch up well. At the same time, the confirmation cases didn't go up very much, therefore the death rate wasn't diluted. 
+
 
 ## Are Cities more Vulnerable?
 
@@ -164,7 +191,7 @@ ggplot(covid_merge_all) +
 
 Here is much clearer that cities are not more vulnerable. So what shapes our perception is probably due to the fact that these places have more people to begin with. We might want to report an area which has a high number of confirmed cases, but it does not mean that it is easier to get infected there.
 
-## Data Visualization for Static Covid Data on Nov 30th & Health Spending Data & Election Data
+## Covid & Election & Health Expenditure
 
 ```{r, warning=FALSE, message=FALSE}
 # boxplot; confirmed rate faceted by party 
@@ -273,9 +300,27 @@ ggplot(tidy_state,aes(x=rate, y=fct_reorder2(state, `rate type`=="death_per_100"
   theme_grey()
 ```
 
-Here it doesn't seem that there is a relationship between election results and Covid-19 death rate. This 
+Here it doesn't seem that there is a relationship between election results and Covid-19 death rate. This makes sense because we don't expect the death from covid to be associated with political affiliation. We wonder if the health cost per captia of states plays a role here. 
 
-## Plot election map
+```{r}
+tidy_state = covid_state %>% 
+  select(`state`, `death_per_1M`, `health_cost_per_captia`) %>% 
+  gather(key='key', value='value', -state)
+
+tidy_state$state = factor(tidy_state$state)
+
+ggplot(tidy_state,aes(x=value, y=fct_reorder2(state, `key`=="death_per_1M", value, .desc = FALSE))) + 
+  geom_point(aes(color=`key`)) + 
+  scale_color_manual(values=c("black", "red")) + 
+  ggtitle("State Death Per 1M v.s. Health Spend Per Captia") + 
+  xlab("Value") + ylab("State") + 
+  theme_grey()
+```
+
+We also don't find an interesting correlation here. There is no relationship between the health expenditure per captia for states and the covid death rate. 
+
+
+## Plot Election Map
 ```{r, warning=FALSE, message=FALSE}
 us_states <- map_data("state")
 head(us_states)
@@ -297,13 +342,17 @@ ggplot(data = us_states_elec,mapping = aes(x = long, y = lat, group = group, fil
                             high = "red4", space = "Lab" ) + 
       labs(title = "Support Rate Difference") +  
       theme_map() + labs(fill = "Percent")
+```
 
+This map gives us a new perspective of viewing the political atmosphere in the United State currently rather than the simple red blue demarcation. Looking at the support rate difference between Biden and Trump, we could tell that the difference becomes more and more significant where it comes to the middle area in the U.S ( high difference of more than 10%). Both northeast and northwest hold the lowest difference around 2.5%.  For the rest part of the U.S, the difference of support rate is around 5%.
 
+```{r}
 ggplot(data = us_states_elec,mapping = aes(x = long, y = lat, group = group, fill = confirmed_rate)) +
       geom_polygon(color = "gray90", size = 0.1) + coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
       labs(title = "Biden Support Rate") + theme_map() + labs(fill ="Percent") + 
-      scale_fill_gradient(low='white', high='black', labels=percent) + 
+      scale_fill_gradient(low='#cbffcd', high='#162f65', labels=percent) + 
       labs(title = "Confirmed Rate") +  
       theme_map() + labs(fill = "Percent")
+```
 
-
+It is easy to see that high confirmed rate clustered in the middle of the map.

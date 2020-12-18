@@ -1,2 +1,8 @@
 # Conclusion
 
+  We find that there is no relationship between health care spending and covid_19 data. Our assumption of location with higher health care spending might have lower covid_19 death rate is wrong.
+
+  We find that there is strong relationship between 2020 election result and covid_19. From the time series data and D3 graph, we can conclude that for the state who support Biden might have lower confirmed rate. Although at the beginning of 2020 (March and May), there are more confirmed rate for state support Democratic than state support Republican. However, the confirmed rate for Republican state are increasing rapidly and greater than Democratic state as time goes on. It might because of the policy from different parties. 
+  
+  There is another interesting find we got in this project. Cities are not more vulnerable than countryside. For the location with higher population which we think they should be the city, the confirmed rate is just as normal as the other places. However, for the place with low population which should be the countryside, the confirmed rate is very high. 
+  
