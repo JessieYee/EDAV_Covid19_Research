@@ -194,10 +194,12 @@ confirmed_d3 = confirmed_d3_all %>%
   )
 
 confirmed_d3 <- confirmed_d3 %>% 
-  mutate(`Support Which Party` = case_when(confirmed_d3$`Biden Support Rate` > 0.5 ~ "Democratic", 
-                                           confirmed_d3$`Biden Support Rate` < 0.5 ~ "Republican"
+  mutate(`Support Which Party` = case_when(confirmed_d3$`Biden Support Rate` > 0.5 ~ "#407abb", 
+                                           confirmed_d3$`Biden Support Rate` < 0.5 ~ "#c03735"
   ))
 confirmed_d3 = merge(confirmed_d3, health_data, by = "state")
+
+confirmed_d3$state = state.abb[match(confirmed_d3$state,state.name)]
 head(confirmed_d3)
 ```
 

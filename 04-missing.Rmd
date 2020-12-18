@@ -42,14 +42,14 @@ head(covid_state)
 confirmed_d3[2,13] = Alaska_Biden
 confirmed_d3[2,14] = Alaska_Trump
 confirmed_d3[2,15] = Alaska_Biden/(Alaska_Biden+Alaska_Trump)
-confirmed_d3[2,16] = case_when(confirmed_d3[2,15] > 0.5 ~ "Democratic", 
-                              confirmed_d3[2,15]< 0.5 ~ "Republican")
+confirmed_d3[2,16] = case_when(confirmed_d3[2,15] > 0.5 ~ "#407abb", 
+                              confirmed_d3[2,15]< 0.5 ~ "#c03735")
 
 confirmed_d3[9,13] = DC_Biden
 confirmed_d3[9,14] = DC_Trump
 confirmed_d3[9,15] = DC_Biden/(DC_Biden+DC_Trump)
-confirmed_d3[9,16] = case_when(confirmed_d3[9,15] > 0.5 ~ "Democratic", 
-                              confirmed_d3[9,15]< 0.5 ~ "Republican")
+confirmed_d3[9,16] = case_when(confirmed_d3[9,15] > 0.5 ~ "#407abb", 
+                              confirmed_d3[9,15]< 0.5 ~ "#c03735")
 
 
 
@@ -58,6 +58,7 @@ confirmed_d3[9,16] = case_when(confirmed_d3[9,15] > 0.5 ~ "Democratic",
 ```{r}
 saveRDS(covid_state,file = "covid_state")
 saveRDS(confirmed_d3,file = "confirmed_d3")
+write.csv(confirmed_d3, "confirmed_d3.csv",row.names = FALSE)
 ```
 
 
