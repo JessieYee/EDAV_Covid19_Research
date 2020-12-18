@@ -8,4 +8,8 @@ site: bookdown::bookdown_site
 
 # Introduction
 
-Focus on Covid_19 Data. Research the relationship between Covid_19, election polling and health care.
+  This project focused on Covid_19 Data. Research the relationship between Covid_19, election polling and health care. Our group assume that there should have relationship between election, health care and Covid_19 confirmed rate and death rate. For the states have higher support rate to the Biden, they might have lower Covid_19 confirmed rate than the states have higher support rate to the Trump. 
+ 
+  We also want to check if high health care spending might decreasing the spreading of covid_19. In other word, we will discuss the relationship between health care and Covid_19. 
+  
+  In this project, we will mainly use package: ggplots in R and D3 to show our fundings and the visualization of data.
