@@ -22,3 +22,9 @@ merge-data
 election-data-1
 checking-missing-value
 fixing-the-na-in-dataset
+obtain-the-covid-data-time-series-data
+time-series-plots-for-state-covid-confirmed-and-death-cases
+time-series-plots-for-state-covid-confirmed-rate-and-death-rate
+are-cities-more-vulnerable
+covid-election-health-expenditure
+plot-election-map

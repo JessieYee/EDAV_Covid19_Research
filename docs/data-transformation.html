@@ -50,15 +50,14 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
@@ -67,16 +66,14 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -85,9 +82,9 @@ pre.numberSource code > span > a:first-child::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {   }
+  {  }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+a.sourceLine::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -151,7 +148,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.1" data-path="missing-values.html"><a href="missing-values.html#checking-missing-value"><i class="fa fa-check"></i><b>4.1</b> Checking missing value</a></li>
 <li class="chapter" data-level="4.2" data-path="missing-values.html"><a href="missing-values.html#fixing-the-na-in-dataset"><i class="fa fa-check"></i><b>4.2</b> Fixing the NA in dataset</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
+<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a><ul>
+<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#obtain-the-covid-data-time-series-data"><i class="fa fa-check"></i><b>5.1</b> Obtain the Covid Data &amp; Time Series Data</a></li>
+<li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#time-series-plots-for-state-covid-confirmed-and-death-cases"><i class="fa fa-check"></i><b>5.2</b> Time Series Plots for State Covid Confirmed and Death Cases</a></li>
+<li class="chapter" data-level="5.3" data-path="results.html"><a href="results.html#time-series-plots-for-state-covid-confirmed-rate-and-death-rate"><i class="fa fa-check"></i><b>5.3</b> Time Series Plots for State Covid Confirmed Rate and Death Rate</a></li>
+<li class="chapter" data-level="5.4" data-path="results.html"><a href="results.html#are-cities-more-vulnerable"><i class="fa fa-check"></i><b>5.4</b> Are Cities more Vulnerable?</a></li>
+<li class="chapter" data-level="5.5" data-path="results.html"><a href="results.html#covid-election-health-expenditure"><i class="fa fa-check"></i><b>5.5</b> Covid &amp; Election &amp; Health Expenditure</a></li>
+<li class="chapter" data-level="5.6" data-path="results.html"><a href="results.html#plot-election-map"><i class="fa fa-check"></i><b>5.6</b> Plot Election Map</a></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a><ul>
 <li class="chapter" data-level="7.0.1" data-path="conclusion.html"><a href="conclusion.html#the-team"><i class="fa fa-check"></i><b>7.0.1</b> 1. The Team</a></li>
@@ -187,96 +191,96 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 3</span> Data transformation</h1>
 <div id="library-package" class="section level2">
 <h2><span class="header-section-number">3.1</span> Library Package</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data-transformation.html#cb1-1"></a><span class="kw">library</span>(dplyr)</span>
-<span id="cb1-2"><a href="data-transformation.html#cb1-2"></a><span class="kw">library</span>(readr)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(readr)</a></code></pre></div>
 </div>
 <div id="health-data" class="section level2">
 <h2><span class="header-section-number">3.2</span> health data</h2>
 <p>Firstly, we read the health data from cms government website.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="data-transformation.html#cb2-1"></a>read_health_data &lt;-<span class="st"> </span><span class="cf">function</span>() {</span>
-<span id="cb2-2"><a href="data-transformation.html#cb2-2"></a>  url =<span class="st"> &#39;https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/NationalHealthExpendData/Downloads/resident-state-estimates.zip&#39;</span></span>
-<span id="cb2-3"><a href="data-transformation.html#cb2-3"></a>  temp &lt;-<span class="st"> </span><span class="kw">tempfile</span>()</span>
-<span id="cb2-4"><a href="data-transformation.html#cb2-4"></a>  temp2 &lt;-<span class="st"> </span><span class="kw">tempfile</span>()</span>
-<span id="cb2-5"><a href="data-transformation.html#cb2-5"></a>  <span class="co"># download the zipfile </span></span>
-<span id="cb2-6"><a href="data-transformation.html#cb2-6"></a>  <span class="kw">download.file</span>(url, temp)</span>
-<span id="cb2-7"><a href="data-transformation.html#cb2-7"></a>  <span class="co"># unzip the file </span></span>
-<span id="cb2-8"><a href="data-transformation.html#cb2-8"></a>  <span class="kw">unzip</span>(<span class="dt">zipfile =</span> temp, <span class="dt">exdir =</span> temp2)</span>
-<span id="cb2-9"><a href="data-transformation.html#cb2-9"></a>  <span class="co"># read_csv, only select the state and 2014 column </span></span>
-<span id="cb2-10"><a href="data-transformation.html#cb2-10"></a>  health_per_capita &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="kw">file.path</span>(temp2, <span class="st">&quot;US_PER_CAPITA14.CSV&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb2-11"><a href="data-transformation.html#cb2-11"></a><span class="st">    </span><span class="kw">filter</span>(<span class="st">`</span><span class="dt">Item</span><span class="st">`</span> <span class="op">==</span><span class="st"> &#39;Personal Health Care ($)&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb2-12"><a href="data-transformation.html#cb2-12"></a><span class="st">    </span><span class="kw">select</span>(<span class="st">&#39;State_Name&#39;</span>, <span class="st">&#39;Y2014&#39;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb2-13"><a href="data-transformation.html#cb2-13"></a><span class="st">    </span><span class="kw">na.omit</span>()</span>
-<span id="cb2-14"><a href="data-transformation.html#cb2-14"></a>  <span class="kw">names</span>(health_per_capita) =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;state&quot;</span>, <span class="st">&quot;2014&quot;</span>)</span>
-<span id="cb2-15"><a href="data-transformation.html#cb2-15"></a>  <span class="kw">return</span>(health_per_capita)</span>
-<span id="cb2-16"><a href="data-transformation.html#cb2-16"></a>}</span>
-<span id="cb2-17"><a href="data-transformation.html#cb2-17"></a></span>
-<span id="cb2-18"><a href="data-transformation.html#cb2-18"></a>health_data &lt;-<span class="st"> </span><span class="kw">read_health_data</span>()</span>
-<span id="cb2-19"><a href="data-transformation.html#cb2-19"></a><span class="kw">head</span>(health_data)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">read_health_data &lt;-<span class="st"> </span><span class="cf">function</span>() {</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">  url =<span class="st"> &#39;https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/NationalHealthExpendData/Downloads/resident-state-estimates.zip&#39;</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">  temp &lt;-<span class="st"> </span><span class="kw">tempfile</span>()</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">  temp2 &lt;-<span class="st"> </span><span class="kw">tempfile</span>()</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="co"># download the zipfile </span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="kw">download.file</span>(url, temp)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="co"># unzip the file </span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">  <span class="kw">unzip</span>(<span class="dt">zipfile =</span> temp, <span class="dt">exdir =</span> temp2)</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">  <span class="co"># read_csv, only select the state and 2014 column </span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">  health_per_capita &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="kw">file.path</span>(temp2, <span class="st">&quot;US_PER_CAPITA14.CSV&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="st">    </span><span class="kw">filter</span>(<span class="st">`</span><span class="dt">Item</span><span class="st">`</span> <span class="op">==</span><span class="st"> &#39;Personal Health Care ($)&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="st">    </span><span class="kw">select</span>(<span class="st">&#39;State_Name&#39;</span>, <span class="st">&#39;Y2014&#39;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="st">    </span><span class="kw">na.omit</span>()</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">  <span class="kw">names</span>(health_per_capita) =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;state&quot;</span>, <span class="st">&quot;health_cost_per_captia&quot;</span>)</a>
+<a class="sourceLine" id="cb2-15" data-line-number="15">  <span class="kw">return</span>(health_per_capita)</a>
+<a class="sourceLine" id="cb2-16" data-line-number="16">}</a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">health_data &lt;-<span class="st"> </span><span class="kw">read_health_data</span>()</a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="kw">head</span>(health_data)</a></code></pre></div>
 <pre><code>## # A tibble: 6 x 2
-##   state      `2014`
-##   &lt;chr&gt;       &lt;dbl&gt;
-## 1 Alabama      7281
-## 2 Alaska      11064
-## 3 Arizona      6452
-## 4 Arkansas     7408
-## 5 California   7549
-## 6 Colorado     6804</code></pre>
+##   state      health_cost_per_captia
+##   &lt;chr&gt;                       &lt;dbl&gt;
+## 1 Alabama                      7281
+## 2 Alaska                      11064
+## 3 Arizona                      6452
+## 4 Arkansas                     7408
+## 5 California                   7549
+## 6 Colorado                     6804</code></pre>
 </div>
 <div id="covid-data" class="section level2">
 <h2><span class="header-section-number">3.3</span> covid data</h2>
 <p>Secondly, we read the covid_19 data before November 30, 2020 and change the column name to make it more readable.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="data-transformation.html#cb4-1"></a>url =<span class="st"> &quot;https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/&quot;</span></span>
-<span id="cb4-2"><a href="data-transformation.html#cb4-2"></a></span>
-<span id="cb4-3"><a href="data-transformation.html#cb4-3"></a>confirmed_df =<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">paste0</span>(url, <span class="st">&quot;time_series_covid19_confirmed_US.csv&quot;</span>))</span>
-<span id="cb4-4"><a href="data-transformation.html#cb4-4"></a><span class="co"># colnames(confirmed_df) = gsub(&quot;X&quot;,&quot;&quot;, colnames(confirmed_df))</span></span>
-<span id="cb4-5"><a href="data-transformation.html#cb4-5"></a>death_df =<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">paste0</span>(url, <span class="st">&quot;time_series_covid19_deaths_US.csv&quot;</span>))</span>
-<span id="cb4-6"><a href="data-transformation.html#cb4-6"></a><span class="co"># colnames(death_df) = gsub(&quot;X&quot;,&quot;&quot;, colnames(death_df))</span></span>
-<span id="cb4-7"><a href="data-transformation.html#cb4-7"></a></span>
-<span id="cb4-8"><a href="data-transformation.html#cb4-8"></a><span class="co"># function for transform covid time series data</span></span>
-<span id="cb4-9"><a href="data-transformation.html#cb4-9"></a>transform_confirmed &lt;-<span class="st"> </span><span class="cf">function</span>(df) {</span>
-<span id="cb4-10"><a href="data-transformation.html#cb4-10"></a>  info_col =<span class="st"> </span>df[,<span class="kw">c</span>(<span class="st">&quot;UID&quot;</span>,<span class="st">&quot;Admin2&quot;</span>,<span class="st">&quot;Province_State&quot;</span>,<span class="st">&quot;Lat&quot;</span>,<span class="st">&quot;Long_&quot;</span>)]</span>
-<span id="cb4-11"><a href="data-transformation.html#cb4-11"></a>  Nov_<span class="dv">30</span> =<span class="st"> </span>df[<span class="st">&quot;X11.30.20&quot;</span>]</span>
-<span id="cb4-12"><a href="data-transformation.html#cb4-12"></a>  df =<span class="st"> </span><span class="kw">cbind</span>(info_col, Nov_<span class="dv">30</span>)</span>
-<span id="cb4-13"><a href="data-transformation.html#cb4-13"></a>  <span class="co"># rename columns </span></span>
-<span id="cb4-14"><a href="data-transformation.html#cb4-14"></a>  ColName =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;UID&quot;</span>,<span class="st">&quot;county&quot;</span>,<span class="st">&quot;state&quot;</span>,<span class="st">&quot;lat&quot;</span>, <span class="st">&quot;long&quot;</span>, <span class="kw">paste0</span>(<span class="st">&#39;confirmed&#39;</span>, <span class="st">&quot;_Nov_30&quot;</span>))</span>
-<span id="cb4-15"><a href="data-transformation.html#cb4-15"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>){</span>
-<span id="cb4-16"><a href="data-transformation.html#cb4-16"></a>    <span class="kw">names</span>(df)[i] =<span class="st"> </span><span class="kw">paste</span>(ColName[i])</span>
-<span id="cb4-17"><a href="data-transformation.html#cb4-17"></a>  }</span>
-<span id="cb4-18"><a href="data-transformation.html#cb4-18"></a>  <span class="kw">return</span>(df)</span>
-<span id="cb4-19"><a href="data-transformation.html#cb4-19"></a>}</span>
-<span id="cb4-20"><a href="data-transformation.html#cb4-20"></a></span>
-<span id="cb4-21"><a href="data-transformation.html#cb4-21"></a><span class="co"># population column is in the death time series data, use another method </span></span>
-<span id="cb4-22"><a href="data-transformation.html#cb4-22"></a>transform_death &lt;-<span class="st"> </span><span class="cf">function</span>(df) {</span>
-<span id="cb4-23"><a href="data-transformation.html#cb4-23"></a>  info_col =<span class="st"> </span>df[,<span class="kw">c</span>(<span class="st">&quot;UID&quot;</span>,<span class="st">&quot;Population&quot;</span>)]</span>
-<span id="cb4-24"><a href="data-transformation.html#cb4-24"></a>  Nov_<span class="dv">30</span> =<span class="st"> </span>df[<span class="st">&quot;X11.30.20&quot;</span>]</span>
-<span id="cb4-25"><a href="data-transformation.html#cb4-25"></a>  df =<span class="st"> </span><span class="kw">cbind</span>(info_col, Nov_<span class="dv">30</span>)</span>
-<span id="cb4-26"><a href="data-transformation.html#cb4-26"></a>  <span class="co"># rename columns </span></span>
-<span id="cb4-27"><a href="data-transformation.html#cb4-27"></a>  ColName =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;UID&quot;</span>,<span class="st">&quot;population&quot;</span>, <span class="kw">paste0</span>(<span class="st">&#39;death&#39;</span>, <span class="st">&quot;_Nov_30&quot;</span>))</span>
-<span id="cb4-28"><a href="data-transformation.html#cb4-28"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>){</span>
-<span id="cb4-29"><a href="data-transformation.html#cb4-29"></a>    <span class="kw">names</span>(df)[i] =<span class="st"> </span><span class="kw">paste</span>(ColName[i])</span>
-<span id="cb4-30"><a href="data-transformation.html#cb4-30"></a>  }</span>
-<span id="cb4-31"><a href="data-transformation.html#cb4-31"></a>  <span class="kw">return</span>(df)</span>
-<span id="cb4-32"><a href="data-transformation.html#cb4-32"></a>}</span>
-<span id="cb4-33"><a href="data-transformation.html#cb4-33"></a></span>
-<span id="cb4-34"><a href="data-transformation.html#cb4-34"></a><span class="co"># transform the two dataframe for Nov 30th only</span></span>
-<span id="cb4-35"><a href="data-transformation.html#cb4-35"></a>confirmed_df_Nov_<span class="dv">30</span> =<span class="st"> </span><span class="kw">transform_confirmed</span>(confirmed_df)</span>
-<span id="cb4-36"><a href="data-transformation.html#cb4-36"></a>death_df_Nov_<span class="dv">30</span> =<span class="st"> </span><span class="kw">transform_death</span>(death_df)</span>
-<span id="cb4-37"><a href="data-transformation.html#cb4-37"></a></span>
-<span id="cb4-38"><a href="data-transformation.html#cb4-38"></a></span>
-<span id="cb4-39"><a href="data-transformation.html#cb4-39"></a><span class="co"># merge confirmed and death by UID</span></span>
-<span id="cb4-40"><a href="data-transformation.html#cb4-40"></a>covid_merged =<span class="st"> </span><span class="kw">merge</span>(confirmed_df_Nov_<span class="dv">30</span>, death_df_Nov_<span class="dv">30</span>, <span class="dt">by =</span> <span class="st">&quot;UID&quot;</span>) <span class="co"># check:3340 rows, 8 columns</span></span>
-<span id="cb4-41"><a href="data-transformation.html#cb4-41"></a></span>
-<span id="cb4-42"><a href="data-transformation.html#cb4-42"></a><span class="co"># add confirm_rate column</span></span>
-<span id="cb4-43"><a href="data-transformation.html#cb4-43"></a>covid_merged<span class="op">$</span>confirmed_rate =<span class="st"> </span>covid_merged<span class="op">$</span>confirmed_Nov_<span class="dv">30</span> <span class="op">/</span><span class="st"> </span>covid_merged<span class="op">$</span>population </span>
-<span id="cb4-44"><a href="data-transformation.html#cb4-44"></a><span class="co"># get death_rate: death / confirmed </span></span>
-<span id="cb4-45"><a href="data-transformation.html#cb4-45"></a><span class="co">#covid_merged$death_Nov_30 = as.numeric(covid_merged$death_Nov_30)</span></span>
-<span id="cb4-46"><a href="data-transformation.html#cb4-46"></a>covid_merged<span class="op">$</span>death_rate =<span class="st"> </span><span class="kw">ifelse</span>(covid_merged<span class="op">$</span>confirmed_Nov_<span class="dv">30</span><span class="op">&gt;</span><span class="dv">0</span>, </span>
-<span id="cb4-47"><a href="data-transformation.html#cb4-47"></a>                                 covid_merged<span class="op">$</span>death_Nov_<span class="dv">30</span><span class="op">/</span>covid_merged<span class="op">$</span>confirmed_Nov_<span class="dv">30</span>,</span>
-<span id="cb4-48"><a href="data-transformation.html#cb4-48"></a>                                 <span class="dv">0</span>)</span>
-<span id="cb4-49"><a href="data-transformation.html#cb4-49"></a></span>
-<span id="cb4-50"><a href="data-transformation.html#cb4-50"></a><span class="co"># if population == 0 remove this row</span></span>
-<span id="cb4-51"><a href="data-transformation.html#cb4-51"></a>covid_merged =<span class="st"> </span>covid_merged[covid_merged[<span class="st">&#39;population&#39;</span>]<span class="op">!=</span><span class="dv">0</span>,]</span>
-<span id="cb4-52"><a href="data-transformation.html#cb4-52"></a><span class="kw">head</span>(covid_merged)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">url =<span class="st"> &quot;https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/&quot;</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">confirmed_df =<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">paste0</span>(url, <span class="st">&quot;time_series_covid19_confirmed_US.csv&quot;</span>))</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co"># colnames(confirmed_df) = gsub(&quot;X&quot;,&quot;&quot;, colnames(confirmed_df))</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">death_df =<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">paste0</span>(url, <span class="st">&quot;time_series_covid19_deaths_US.csv&quot;</span>))</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co"># colnames(death_df) = gsub(&quot;X&quot;,&quot;&quot;, colnames(death_df))</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co"># function for transform covid time series data</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">transform_confirmed &lt;-<span class="st"> </span><span class="cf">function</span>(df) {</a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">  info_col =<span class="st"> </span>df[,<span class="kw">c</span>(<span class="st">&quot;UID&quot;</span>,<span class="st">&quot;Admin2&quot;</span>,<span class="st">&quot;Province_State&quot;</span>,<span class="st">&quot;Lat&quot;</span>,<span class="st">&quot;Long_&quot;</span>)]</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">  Nov_<span class="dv">30</span> =<span class="st"> </span>df[<span class="st">&quot;X11.30.20&quot;</span>]</a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">  df =<span class="st"> </span><span class="kw">cbind</span>(info_col, Nov_<span class="dv">30</span>)</a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">  <span class="co"># rename columns </span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">  ColName =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;UID&quot;</span>,<span class="st">&quot;county&quot;</span>,<span class="st">&quot;state&quot;</span>,<span class="st">&quot;lat&quot;</span>, <span class="st">&quot;long&quot;</span>, <span class="kw">paste0</span>(<span class="st">&#39;confirmed&#39;</span>, <span class="st">&quot;_Nov_30&quot;</span>))</a>
+<a class="sourceLine" id="cb4-15" data-line-number="15">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>){</a>
+<a class="sourceLine" id="cb4-16" data-line-number="16">    <span class="kw">names</span>(df)[i] =<span class="st"> </span><span class="kw">paste</span>(ColName[i])</a>
+<a class="sourceLine" id="cb4-17" data-line-number="17">  }</a>
+<a class="sourceLine" id="cb4-18" data-line-number="18">  <span class="kw">return</span>(df)</a>
+<a class="sourceLine" id="cb4-19" data-line-number="19">}</a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co"># population column is in the death time series data, use another method </span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22">transform_death &lt;-<span class="st"> </span><span class="cf">function</span>(df) {</a>
+<a class="sourceLine" id="cb4-23" data-line-number="23">  info_col =<span class="st"> </span>df[,<span class="kw">c</span>(<span class="st">&quot;UID&quot;</span>,<span class="st">&quot;Population&quot;</span>)]</a>
+<a class="sourceLine" id="cb4-24" data-line-number="24">  Nov_<span class="dv">30</span> =<span class="st"> </span>df[<span class="st">&quot;X11.30.20&quot;</span>]</a>
+<a class="sourceLine" id="cb4-25" data-line-number="25">  df =<span class="st"> </span><span class="kw">cbind</span>(info_col, Nov_<span class="dv">30</span>)</a>
+<a class="sourceLine" id="cb4-26" data-line-number="26">  <span class="co"># rename columns </span></a>
+<a class="sourceLine" id="cb4-27" data-line-number="27">  ColName =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;UID&quot;</span>,<span class="st">&quot;population&quot;</span>, <span class="kw">paste0</span>(<span class="st">&#39;death&#39;</span>, <span class="st">&quot;_Nov_30&quot;</span>))</a>
+<a class="sourceLine" id="cb4-28" data-line-number="28">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>){</a>
+<a class="sourceLine" id="cb4-29" data-line-number="29">    <span class="kw">names</span>(df)[i] =<span class="st"> </span><span class="kw">paste</span>(ColName[i])</a>
+<a class="sourceLine" id="cb4-30" data-line-number="30">  }</a>
+<a class="sourceLine" id="cb4-31" data-line-number="31">  <span class="kw">return</span>(df)</a>
+<a class="sourceLine" id="cb4-32" data-line-number="32">}</a>
+<a class="sourceLine" id="cb4-33" data-line-number="33"></a>
+<a class="sourceLine" id="cb4-34" data-line-number="34"><span class="co"># transform the two dataframe for Nov 30th only</span></a>
+<a class="sourceLine" id="cb4-35" data-line-number="35">confirmed_df_Nov_<span class="dv">30</span> =<span class="st"> </span><span class="kw">transform_confirmed</span>(confirmed_df)</a>
+<a class="sourceLine" id="cb4-36" data-line-number="36">death_df_Nov_<span class="dv">30</span> =<span class="st"> </span><span class="kw">transform_death</span>(death_df)</a>
+<a class="sourceLine" id="cb4-37" data-line-number="37"></a>
+<a class="sourceLine" id="cb4-38" data-line-number="38"></a>
+<a class="sourceLine" id="cb4-39" data-line-number="39"><span class="co"># merge confirmed and death by UID</span></a>
+<a class="sourceLine" id="cb4-40" data-line-number="40">covid_merged =<span class="st"> </span><span class="kw">merge</span>(confirmed_df_Nov_<span class="dv">30</span>, death_df_Nov_<span class="dv">30</span>, <span class="dt">by =</span> <span class="st">&quot;UID&quot;</span>) <span class="co"># check:3340 rows, 8 columns</span></a>
+<a class="sourceLine" id="cb4-41" data-line-number="41"></a>
+<a class="sourceLine" id="cb4-42" data-line-number="42"><span class="co"># add confirm_rate column</span></a>
+<a class="sourceLine" id="cb4-43" data-line-number="43">covid_merged<span class="op">$</span>confirmed_rate =<span class="st"> </span>covid_merged<span class="op">$</span>confirmed_Nov_<span class="dv">30</span> <span class="op">/</span><span class="st"> </span>covid_merged<span class="op">$</span>population </a>
+<a class="sourceLine" id="cb4-44" data-line-number="44"><span class="co"># get death_rate: death / confirmed </span></a>
+<a class="sourceLine" id="cb4-45" data-line-number="45"><span class="co">#covid_merged$death_Nov_30 = as.numeric(covid_merged$death_Nov_30)</span></a>
+<a class="sourceLine" id="cb4-46" data-line-number="46">covid_merged<span class="op">$</span>death_rate =<span class="st"> </span><span class="kw">ifelse</span>(covid_merged<span class="op">$</span>confirmed_Nov_<span class="dv">30</span><span class="op">&gt;</span><span class="dv">0</span>, </a>
+<a class="sourceLine" id="cb4-47" data-line-number="47">                                 covid_merged<span class="op">$</span>death_Nov_<span class="dv">30</span><span class="op">/</span>covid_merged<span class="op">$</span>confirmed_Nov_<span class="dv">30</span>,</a>
+<a class="sourceLine" id="cb4-48" data-line-number="48">                                 <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb4-49" data-line-number="49"></a>
+<a class="sourceLine" id="cb4-50" data-line-number="50"><span class="co"># if population == 0 remove this row</span></a>
+<a class="sourceLine" id="cb4-51" data-line-number="51">covid_merged =<span class="st"> </span>covid_merged[covid_merged[<span class="st">&#39;population&#39;</span>]<span class="op">!=</span><span class="dv">0</span>,]</a>
+<a class="sourceLine" id="cb4-52" data-line-number="52"><span class="kw">head</span>(covid_merged)</a></code></pre></div>
 <pre><code>##        UID   county                    state       lat       long
 ## 1       16                    American Samoa -14.27100 -170.13200
 ## 2      316                              Guam  13.44430  144.79370
@@ -291,20 +295,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4             1544     107268           23    0.014393855 0.01489637
 ## 5              159      19483            0    0.008160961 0.00000000
 ## 6              428      41959            0    0.010200434 0.00000000</code></pre>
+<p>We want to find the relationship between covid_19 and election through time. So, we generate new dataframe confirmed_d3 and confirmed_TS.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">transform_confirmed_d3 &lt;-<span class="st"> </span><span class="cf">function</span>(df) {</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">  info_col =<span class="st"> </span>df[,<span class="kw">c</span>(<span class="st">&quot;UID&quot;</span>,<span class="st">&quot;Admin2&quot;</span>,<span class="st">&quot;Province_State&quot;</span>,<span class="st">&quot;Lat&quot;</span>,<span class="st">&quot;Long_&quot;</span>)]</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">  dates =<span class="st"> </span>df[,<span class="kw">c</span>(<span class="st">&quot;X3.30.20&quot;</span>,<span class="st">&quot;X5.30.20&quot;</span>,<span class="st">&quot;X7.30.20&quot;</span>,<span class="st">&quot;X9.30.20&quot;</span>,<span class="st">&quot;X11.30.20&quot;</span>)]</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">  df =<span class="st"> </span><span class="kw">cbind</span>(info_col, dates)</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">  <span class="co"># rename columns </span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">  ColName =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;UID&quot;</span>,<span class="st">&quot;county&quot;</span>,<span class="st">&quot;state&quot;</span>,<span class="st">&quot;lat&quot;</span>, <span class="st">&quot;long&quot;</span>)</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>){</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">    <span class="kw">names</span>(df)[i] =<span class="st"> </span><span class="kw">paste</span>(ColName[i])</a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">  }</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">  <span class="kw">return</span>(df)</a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">}</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13">confirmed_d3 =<span class="st"> </span><span class="kw">transform_confirmed_d3</span>(confirmed_df)</a>
+<a class="sourceLine" id="cb6-14" data-line-number="14">subdeath =<span class="st"> </span><span class="kw">subset</span>(death_df,<span class="dt">select =</span> <span class="kw">c</span>(<span class="st">&quot;UID&quot;</span>,<span class="st">&quot;Population&quot;</span>))</a>
+<a class="sourceLine" id="cb6-15" data-line-number="15">confirmed_d3 =<span class="st"> </span><span class="kw">merge</span>(confirmed_d3,subdeath, <span class="dt">by=</span><span class="st">&quot;UID&quot;</span>)</a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co"># cr means confirmed rate </span></a>
+<a class="sourceLine" id="cb6-18" data-line-number="18">confirmed_d3<span class="op">$</span>cr3 =<span class="st"> </span>confirmed_d3<span class="op">$</span>X3.<span class="fl">30.20</span><span class="op">/</span>confirmed_d3<span class="op">$</span>Population</a>
+<a class="sourceLine" id="cb6-19" data-line-number="19">confirmed_d3<span class="op">$</span>cr5 =<span class="st"> </span>confirmed_d3<span class="op">$</span>X5.<span class="fl">30.20</span><span class="op">/</span>confirmed_d3<span class="op">$</span>Population</a>
+<a class="sourceLine" id="cb6-20" data-line-number="20">confirmed_d3<span class="op">$</span>cr7 =<span class="st"> </span>confirmed_d3<span class="op">$</span>X7.<span class="fl">30.20</span><span class="op">/</span>confirmed_d3<span class="op">$</span>Population</a>
+<a class="sourceLine" id="cb6-21" data-line-number="21">confirmed_d3<span class="op">$</span>cr9 =<span class="st"> </span>confirmed_d3<span class="op">$</span>X9.<span class="fl">30.20</span><span class="op">/</span>confirmed_d3<span class="op">$</span>Population</a>
+<a class="sourceLine" id="cb6-22" data-line-number="22">confirmed_d3<span class="op">$</span>cr11 =<span class="st"> </span>confirmed_d3<span class="op">$</span>X11.<span class="fl">30.20</span><span class="op">/</span>confirmed_d3<span class="op">$</span>Population</a>
+<a class="sourceLine" id="cb6-23" data-line-number="23"><span class="kw">head</span>(confirmed_d3)</a></code></pre></div>
+<pre><code>##        UID   county                    state       lat       long X3.30.20
+## 1       16                    American Samoa -14.27100 -170.13200        0
+## 2      316                              Guam  13.44430  144.79370       58
+## 3      580          Northern Mariana Islands  15.09790  145.67390        0
+## 4      850                    Virgin Islands  18.33580  -64.89630       30
+## 5 63072001 Adjuntas              Puerto Rico  18.18012  -66.75437        0
+## 6 63072003   Aguada              Puerto Rico  18.36025  -67.17513        0
+##   X5.30.20 X7.30.20 X9.30.20 X11.30.20 Population          cr3          cr5
+## 1        0        0        0         0      55641 0.0000000000 0.0000000000
+## 2      172      356     2488      6852     164229 0.0003531654 0.0010473181
+## 3       22       42       70       106      55144 0.0000000000 0.0003989555
+## 4       69      385     1318      1544     107268 0.0002796733 0.0006432487
+## 5        7       29       77       159      19483 0.0000000000 0.0003592876
+## 6       10       36      172       428      41959 0.0000000000 0.0002383279
+##            cr7         cr9        cr11
+## 1 0.0000000000 0.000000000 0.000000000
+## 2 0.0021677049 0.015149578 0.041722229
+## 3 0.0007616422 0.001269404 0.001922240
+## 4 0.0035891412 0.012286982 0.014393855
+## 5 0.0014884771 0.003952163 0.008160961
+## 6 0.0008579804 0.004099240 0.010200434</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">confirmed_TS &lt;-<span class="st"> </span>confirmed_df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(Combined_Key,UID,Province_State, <span class="kw">c</span>(<span class="st">`</span><span class="dt">X1.22.20</span><span class="st">`</span><span class="op">:</span><span class="st">`</span><span class="dt">X11.30.20</span><span class="st">`</span>)) </a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">death_TS &lt;-<span class="st"> </span>death_df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(Combined_Key, UID,Province_State, Population, <span class="kw">c</span>(<span class="st">`</span><span class="dt">X1.22.20</span><span class="st">`</span><span class="op">:</span><span class="st">`</span><span class="dt">X11.30.20</span><span class="st">`</span>))</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">confirmed_TS_merge =<span class="st"> </span><span class="kw">merge</span>(confirmed_df, death_df<span class="op">%&gt;%</span><span class="kw">select</span>(UID, Population), <span class="dt">by =</span> <span class="st">&quot;UID&quot;</span>)</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">confirmed_TS_merge =<span class="st"> </span>confirmed_TS_merge[confirmed_TS_merge[<span class="st">&#39;Population&#39;</span>] <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>, ]</a></code></pre></div>
 </div>
 <div id="election-data" class="section level2">
 <h2><span class="header-section-number">3.4</span> election data</h2>
 <p>The last dataset we want to consider is the 2020 election data in USA.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="data-transformation.html#cb6-1"></a>url_election =<span class="st"> &quot;https://raw.githubusercontent.com/JessieYee/EDAV_Covid19_Research/main/election2020.csv&quot;</span></span>
-<span id="cb6-2"><a href="data-transformation.html#cb6-2"></a></span>
-<span id="cb6-3"><a href="data-transformation.html#cb6-3"></a>election =<span class="st"> </span><span class="kw">read.csv</span>(url_election)</span>
-<span id="cb6-4"><a href="data-transformation.html#cb6-4"></a><span class="co">#election$Combined_Key = paste0(election$County, &quot;, &quot;, election$State, &quot;, US&quot;)</span></span>
-<span id="cb6-5"><a href="data-transformation.html#cb6-5"></a>election[] &lt;-<span class="st"> </span><span class="kw">lapply</span>(election, gsub, <span class="dt">pattern=</span><span class="st">&#39;,&#39;</span>, <span class="dt">replacement=</span><span class="st">&#39;&#39;</span>)</span>
-<span id="cb6-6"><a href="data-transformation.html#cb6-6"></a>election[<span class="st">&quot;state&quot;</span>]&lt;-<span class="kw">lapply</span>(election[<span class="st">&quot;state&quot;</span>], gsub, <span class="dt">pattern=</span><span class="st">&#39;-&#39;</span>, <span class="dt">replacement=</span><span class="st">&#39; &#39;</span>)</span>
-<span id="cb6-7"><a href="data-transformation.html#cb6-7"></a>election<span class="op">$</span>Biden =<span class="st"> </span><span class="kw">as.numeric</span>(election<span class="op">$</span>Biden)</span>
-<span id="cb6-8"><a href="data-transformation.html#cb6-8"></a>election<span class="op">$</span>Trump =<span class="st"> </span><span class="kw">as.numeric</span>(election<span class="op">$</span>Trump)</span>
-<span id="cb6-9"><a href="data-transformation.html#cb6-9"></a>election<span class="op">$</span>Biden_support_rate =<span class="st"> </span>election<span class="op">$</span>Biden <span class="op">/</span><span class="st"> </span>(election<span class="op">$</span>Biden<span class="op">+</span>election<span class="op">$</span>Trump)</span>
-<span id="cb6-10"><a href="data-transformation.html#cb6-10"></a><span class="kw">head</span>(election)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">url_election =<span class="st"> &quot;https://raw.githubusercontent.com/JessieYee/EDAV_Covid19_Research/main/election2020.csv&quot;</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">election =<span class="st"> </span><span class="kw">read.csv</span>(url_election)</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#election$Combined_Key = paste0(election$County, &quot;, &quot;, election$State, &quot;, US&quot;)</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">election[] &lt;-<span class="st"> </span><span class="kw">lapply</span>(election, gsub, <span class="dt">pattern=</span><span class="st">&#39;,&#39;</span>, <span class="dt">replacement=</span><span class="st">&#39;&#39;</span>)</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">election[<span class="st">&quot;state&quot;</span>]&lt;-<span class="kw">lapply</span>(election[<span class="st">&quot;state&quot;</span>], gsub, <span class="dt">pattern=</span><span class="st">&#39;-&#39;</span>, <span class="dt">replacement=</span><span class="st">&#39; &#39;</span>)</a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">election<span class="op">$</span>Biden =<span class="st"> </span><span class="kw">as.numeric</span>(election<span class="op">$</span>Biden)</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">election<span class="op">$</span>Trump =<span class="st"> </span><span class="kw">as.numeric</span>(election<span class="op">$</span>Trump)</a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">election<span class="op">$</span>Biden_support_rate =<span class="st"> </span>election<span class="op">$</span>Biden <span class="op">/</span><span class="st"> </span>(election<span class="op">$</span>Biden<span class="op">+</span>election<span class="op">$</span>Trump)</a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="kw">head</span>(election)</a></code></pre></div>
 <pre><code>##     state  county Biden Trump Biden_support_rate
 ## 1 Alabama Autauga  7503 19838         0.27442303
 ## 2 Alabama Baldwin 24578 83544         0.22731729
@@ -319,28 +372,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ol style="list-style-type: decimal">
 <li>left join the covid_19 data and election</li>
 </ol>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data-transformation.html#cb8-1"></a>covid_merge_all &lt;-<span class="st"> </span><span class="kw">merge</span>(covid_merged, election, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;state&quot;</span>,<span class="st">&quot;county&quot;</span>),<span class="dt">all.x =</span> <span class="ot">TRUE</span>,<span class="dt">all.y =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb8-2"><a href="data-transformation.html#cb8-2"></a></span>
-<span id="cb8-3"><a href="data-transformation.html#cb8-3"></a>covid_state =<span class="st"> </span>covid_merge_all <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-4"><a href="data-transformation.html#cb8-4"></a><span class="st">  </span><span class="kw">group_by</span>(<span class="st">`</span><span class="dt">state</span><span class="st">`</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-5"><a href="data-transformation.html#cb8-5"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="st">`</span><span class="dt">confirmed_Nov_30</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(confirmed_Nov_<span class="dv">30</span>),</span>
-<span id="cb8-6"><a href="data-transformation.html#cb8-6"></a>            <span class="st">`</span><span class="dt">death_Nov_30</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(death_Nov_<span class="dv">30</span>),</span>
-<span id="cb8-7"><a href="data-transformation.html#cb8-7"></a>            <span class="st">`</span><span class="dt">population</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(population),</span>
-<span id="cb8-8"><a href="data-transformation.html#cb8-8"></a>            <span class="st">`</span><span class="dt">confirmed_rate</span><span class="st">`</span> =<span class="st">`</span><span class="dt">confirmed_Nov_30</span><span class="st">`</span><span class="op">/</span><span class="st"> `</span><span class="dt">population</span><span class="st">`</span>,</span>
-<span id="cb8-9"><a href="data-transformation.html#cb8-9"></a>            <span class="st">`</span><span class="dt">death_rate</span><span class="st">`</span> =<span class="st"> </span><span class="kw">ifelse</span>(<span class="st">&#39;confirmed_Nov_30&#39;</span><span class="op">&gt;</span><span class="dv">0</span>, </span>
-<span id="cb8-10"><a href="data-transformation.html#cb8-10"></a>                                  <span class="st">`</span><span class="dt">death_Nov_30</span><span class="st">`</span><span class="op">/</span><span class="st">`</span><span class="dt">confirmed_Nov_30</span><span class="st">`</span>,</span>
-<span id="cb8-11"><a href="data-transformation.html#cb8-11"></a>                                  <span class="dv">0</span>),</span>
-<span id="cb8-12"><a href="data-transformation.html#cb8-12"></a>            <span class="st">`</span><span class="dt">Biden</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(Biden,<span class="dt">na.rm=</span><span class="ot">TRUE</span>),</span>
-<span id="cb8-13"><a href="data-transformation.html#cb8-13"></a>            <span class="st">`</span><span class="dt">Trump</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(Trump,<span class="dt">na.rm=</span><span class="ot">TRUE</span>),</span>
-<span id="cb8-14"><a href="data-transformation.html#cb8-14"></a>            <span class="st">`</span><span class="dt">Biden Support Rate</span><span class="st">`</span> =<span class="st"> `</span><span class="dt">Biden</span><span class="st">`</span><span class="op">/</span>(<span class="st">`</span><span class="dt">Biden</span><span class="st">`</span> <span class="op">+</span><span class="st"> `</span><span class="dt">Trump</span><span class="st">`</span>),</span>
-<span id="cb8-15"><a href="data-transformation.html#cb8-15"></a>  )</span>
-<span id="cb8-16"><a href="data-transformation.html#cb8-16"></a></span>
-<span id="cb8-17"><a href="data-transformation.html#cb8-17"></a>covid_state &lt;-<span class="st"> </span>covid_state <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-18"><a href="data-transformation.html#cb8-18"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="st">`</span><span class="dt">Support Which Party</span><span class="st">`</span> =<span class="st"> </span><span class="kw">case_when</span>(covid_state<span class="op">$</span><span class="st">`</span><span class="dt">Biden Support Rate</span><span class="st">`</span> <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.5</span> <span class="op">~</span><span class="st"> &quot;Democratic&quot;</span>, </span>
-<span id="cb8-19"><a href="data-transformation.html#cb8-19"></a>                                           covid_state<span class="op">$</span><span class="st">`</span><span class="dt">Biden Support Rate</span><span class="st">`</span> <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span> <span class="op">~</span><span class="st"> &quot;Republican&quot;</span></span>
-<span id="cb8-20"><a href="data-transformation.html#cb8-20"></a>  ))</span>
-<span id="cb8-21"><a href="data-transformation.html#cb8-21"></a>covid_state =<span class="st"> </span><span class="kw">merge</span>(covid_state, health_data, <span class="dt">by =</span> <span class="st">&quot;state&quot;</span>)</span>
-<span id="cb8-22"><a href="data-transformation.html#cb8-22"></a><span class="kw">head</span>(covid_state)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">covid_merge_all &lt;-<span class="st"> </span><span class="kw">merge</span>(covid_merged, election, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;state&quot;</span>,<span class="st">&quot;county&quot;</span>),<span class="dt">all.x =</span> <span class="ot">TRUE</span>,<span class="dt">all.y =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">covid_state =<span class="st"> </span>covid_merge_all <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw">group_by</span>(<span class="st">`</span><span class="dt">state</span><span class="st">`</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="st">  </span><span class="kw">summarize</span>(<span class="st">`</span><span class="dt">confirmed_Nov_30</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(confirmed_Nov_<span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">            <span class="st">`</span><span class="dt">death_Nov_30</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(death_Nov_<span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb11-7" data-line-number="7">            <span class="st">`</span><span class="dt">population</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(population),</a>
+<a class="sourceLine" id="cb11-8" data-line-number="8">            <span class="st">`</span><span class="dt">confirmed_rate</span><span class="st">`</span> =<span class="st">`</span><span class="dt">confirmed_Nov_30</span><span class="st">`</span><span class="op">/</span><span class="st"> `</span><span class="dt">population</span><span class="st">`</span>,</a>
+<a class="sourceLine" id="cb11-9" data-line-number="9">            <span class="st">`</span><span class="dt">death_rate</span><span class="st">`</span> =<span class="st"> </span><span class="kw">ifelse</span>(<span class="st">&#39;confirmed_Nov_30&#39;</span><span class="op">&gt;</span><span class="dv">0</span>, </a>
+<a class="sourceLine" id="cb11-10" data-line-number="10">                                  <span class="st">`</span><span class="dt">death_Nov_30</span><span class="st">`</span><span class="op">/</span><span class="st">`</span><span class="dt">confirmed_Nov_30</span><span class="st">`</span>,</a>
+<a class="sourceLine" id="cb11-11" data-line-number="11">                                  <span class="dv">0</span>),</a>
+<a class="sourceLine" id="cb11-12" data-line-number="12">            <span class="st">`</span><span class="dt">Biden</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(Biden,<span class="dt">na.rm=</span><span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb11-13" data-line-number="13">            <span class="st">`</span><span class="dt">Trump</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(Trump,<span class="dt">na.rm=</span><span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb11-14" data-line-number="14">            <span class="st">`</span><span class="dt">Biden Support Rate</span><span class="st">`</span> =<span class="st"> `</span><span class="dt">Biden</span><span class="st">`</span><span class="op">/</span>(<span class="st">`</span><span class="dt">Biden</span><span class="st">`</span> <span class="op">+</span><span class="st"> `</span><span class="dt">Trump</span><span class="st">`</span>),</a>
+<a class="sourceLine" id="cb11-15" data-line-number="15">  )</a>
+<a class="sourceLine" id="cb11-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb11-17" data-line-number="17">covid_state &lt;-<span class="st"> </span>covid_state <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-18" data-line-number="18"><span class="st">  </span><span class="kw">mutate</span>(<span class="st">`</span><span class="dt">Support Which Party</span><span class="st">`</span> =<span class="st"> </span><span class="kw">case_when</span>(covid_state<span class="op">$</span><span class="st">`</span><span class="dt">Biden Support Rate</span><span class="st">`</span> <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.5</span> <span class="op">~</span><span class="st"> &quot;Democratic&quot;</span>, </a>
+<a class="sourceLine" id="cb11-19" data-line-number="19">                                           covid_state<span class="op">$</span><span class="st">`</span><span class="dt">Biden Support Rate</span><span class="st">`</span> <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span> <span class="op">~</span><span class="st"> &quot;Republican&quot;</span></a>
+<a class="sourceLine" id="cb11-20" data-line-number="20">  ))</a>
+<a class="sourceLine" id="cb11-21" data-line-number="21">covid_state =<span class="st"> </span><span class="kw">merge</span>(covid_state, health_data, <span class="dt">by =</span> <span class="st">&quot;state&quot;</span>)</a>
+<a class="sourceLine" id="cb11-22" data-line-number="22"><span class="kw">head</span>(covid_state)</a></code></pre></div>
 <pre><code>##        state confirmed_Nov_30 death_Nov_30 population confirmed_rate
 ## 1    Alabama           249524         3578    4903185     0.05089019
 ## 2     Alaska            32418          121     731545     0.04431443
@@ -348,27 +401,93 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4   Arkansas           154865         2502    3017804     0.05131712
 ## 5 California          1230264        19173   39512223     0.03113629
 ## 6   Colorado           232878         3037    5758736     0.04043908
-##    death_rate    Biden   Trump Biden Support Rate Support Which Party  2014
-## 1 0.014339302   849648 1441168          0.3708932          Republican  7281
-## 2 0.003732494        0       0                NaN                &lt;NA&gt; 11064
-## 3 0.020314121  1672143 1661686          0.5015683          Democratic  6452
-## 4 0.016156007   420328  757405          0.3568958          Republican  7408
-## 5 0.015584460 11109764 6005961          0.6490969          Democratic  7549
-## 6 0.013041163  1804352 1364607          0.5693832          Democratic  6804</code></pre>
+##    death_rate    Biden   Trump Biden Support Rate Support Which Party
+## 1 0.014339302   849648 1441168          0.3708932          Republican
+## 2 0.003732494        0       0                NaN                &lt;NA&gt;
+## 3 0.020314121  1672143 1661686          0.5015683          Democratic
+## 4 0.016156007   420328  757405          0.3568958          Republican
+## 5 0.015584460 11109764 6005961          0.6490969          Democratic
+## 6 0.013041163  1804352 1364607          0.5693832          Democratic
+##   health_cost_per_captia
+## 1                   7281
+## 2                  11064
+## 3                   6452
+## 4                   7408
+## 5                   7549
+## 6                   6804</code></pre>
 <p>We separate the votes to two groups: support Democratic Party and support Republican Party by checking the <code>Biden Support Rate</code>.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Merge election data with confirmed_d3 dataset</li>
+</ol>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">confirmed_d3_all &lt;-<span class="st"> </span><span class="kw">merge</span>(confirmed_d3, election, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;state&quot;</span>,<span class="st">&quot;county&quot;</span>),<span class="dt">all.x =</span> <span class="ot">TRUE</span>,<span class="dt">all.y =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">confirmed_d3 =<span class="st"> </span>confirmed_d3_all <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">  </span><span class="kw">group_by</span>(<span class="st">`</span><span class="dt">state</span><span class="st">`</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="st">  </span><span class="kw">summarize</span>(<span class="st">`</span><span class="dt">confirmed_Nov_30</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(X11.<span class="fl">30.20</span>),</a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">            <span class="st">`</span><span class="dt">confirmed_Sep_30</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(X9.<span class="fl">30.20</span>),</a>
+<a class="sourceLine" id="cb13-7" data-line-number="7">            <span class="st">`</span><span class="dt">confirmed_July_30</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(X7.<span class="fl">30.20</span>),</a>
+<a class="sourceLine" id="cb13-8" data-line-number="8">            <span class="st">`</span><span class="dt">confirmed_May_30</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(X5.<span class="fl">30.20</span>),</a>
+<a class="sourceLine" id="cb13-9" data-line-number="9">            <span class="st">`</span><span class="dt">confirmed_Mar_30</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(X3.<span class="fl">30.20</span>),</a>
+<a class="sourceLine" id="cb13-10" data-line-number="10">            <span class="st">`</span><span class="dt">population</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(Population),</a>
+<a class="sourceLine" id="cb13-11" data-line-number="11">            <span class="st">`</span><span class="dt">Nov_rate</span><span class="st">`</span> =<span class="st">`</span><span class="dt">confirmed_Nov_30</span><span class="st">`</span><span class="op">/</span><span class="st"> `</span><span class="dt">population</span><span class="st">`</span>,</a>
+<a class="sourceLine" id="cb13-12" data-line-number="12">            <span class="st">`</span><span class="dt">Sep_rate</span><span class="st">`</span> =<span class="st">`</span><span class="dt">confirmed_Sep_30</span><span class="st">`</span><span class="op">/</span><span class="st"> `</span><span class="dt">population</span><span class="st">`</span>,</a>
+<a class="sourceLine" id="cb13-13" data-line-number="13">            <span class="st">`</span><span class="dt">July_rate</span><span class="st">`</span> =<span class="st">`</span><span class="dt">confirmed_July_30</span><span class="st">`</span><span class="op">/</span><span class="st"> `</span><span class="dt">population</span><span class="st">`</span>,</a>
+<a class="sourceLine" id="cb13-14" data-line-number="14">            <span class="st">`</span><span class="dt">May_rate</span><span class="st">`</span> =<span class="st">`</span><span class="dt">confirmed_May_30</span><span class="st">`</span><span class="op">/</span><span class="st"> `</span><span class="dt">population</span><span class="st">`</span>,</a>
+<a class="sourceLine" id="cb13-15" data-line-number="15">            <span class="st">`</span><span class="dt">March_rate</span><span class="st">`</span> =<span class="st">`</span><span class="dt">confirmed_Mar_30</span><span class="st">`</span><span class="op">/</span><span class="st"> `</span><span class="dt">population</span><span class="st">`</span>,</a>
+<a class="sourceLine" id="cb13-16" data-line-number="16">            <span class="st">`</span><span class="dt">Biden</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(Biden,<span class="dt">na.rm=</span><span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb13-17" data-line-number="17">            <span class="st">`</span><span class="dt">Trump</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(Trump,<span class="dt">na.rm=</span><span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb13-18" data-line-number="18">            <span class="st">`</span><span class="dt">Biden Support Rate</span><span class="st">`</span> =<span class="st"> `</span><span class="dt">Biden</span><span class="st">`</span><span class="op">/</span>(<span class="st">`</span><span class="dt">Biden</span><span class="st">`</span> <span class="op">+</span><span class="st"> `</span><span class="dt">Trump</span><span class="st">`</span>),</a>
+<a class="sourceLine" id="cb13-19" data-line-number="19">  )</a>
+<a class="sourceLine" id="cb13-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb13-21" data-line-number="21">confirmed_d3 &lt;-<span class="st"> </span>confirmed_d3 <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-22" data-line-number="22"><span class="st">  </span><span class="kw">mutate</span>(<span class="st">`</span><span class="dt">Support Which Party</span><span class="st">`</span> =<span class="st"> </span><span class="kw">case_when</span>(confirmed_d3<span class="op">$</span><span class="st">`</span><span class="dt">Biden Support Rate</span><span class="st">`</span> <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.5</span> <span class="op">~</span><span class="st"> &quot;#407abb&quot;</span>, </a>
+<a class="sourceLine" id="cb13-23" data-line-number="23">                                           confirmed_d3<span class="op">$</span><span class="st">`</span><span class="dt">Biden Support Rate</span><span class="st">`</span> <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span> <span class="op">~</span><span class="st"> &quot;#c03735&quot;</span></a>
+<a class="sourceLine" id="cb13-24" data-line-number="24">  ))</a>
+<a class="sourceLine" id="cb13-25" data-line-number="25">confirmed_d3 =<span class="st"> </span><span class="kw">merge</span>(confirmed_d3, health_data, <span class="dt">by =</span> <span class="st">&quot;state&quot;</span>)</a>
+<a class="sourceLine" id="cb13-26" data-line-number="26"></a>
+<a class="sourceLine" id="cb13-27" data-line-number="27">confirmed_d3<span class="op">$</span>state =<span class="st"> </span>state.abb[<span class="kw">match</span>(confirmed_d3<span class="op">$</span>state,state.name)]</a>
+<a class="sourceLine" id="cb13-28" data-line-number="28"><span class="kw">head</span>(confirmed_d3)</a></code></pre></div>
+<pre><code>##   state confirmed_Nov_30 confirmed_Sep_30 confirmed_July_30 confirmed_May_30
+## 1    AL           249524           154772             86664            17689
+## 2    AK            32576             8845              3605              455
+## 3    AZ           326817           218507            170798            19258
+## 4    AR           157359            83697             41759             7013
+## 5    CA          1230264           819115            492934           109895
+## 6    CO           232905            70536             46204            26098
+##   confirmed_Mar_30 population   Nov_rate   Sep_rate   July_rate     May_rate
+## 1             1001    4903185 0.05089019 0.03156560 0.017675042 0.0036076550
+## 2              119     731545 0.04453041 0.01209085 0.004927927 0.0006219713
+## 3             1157    7278717 0.04490036 0.03001999 0.023465399 0.0026457960
+## 4              473    3017804 0.05214355 0.02773441 0.013837545 0.0023238752
+## 5             7155   39512223 0.03113629 0.02073067 0.012475481 0.0027812912
+## 6             2627    5758736 0.04044377 0.01224852 0.008023288 0.0045318973
+##     March_rate    Biden   Trump Biden Support Rate Support Which Party
+## 1 0.0002041530   849648 1441168          0.3708932             #c03735
+## 2 0.0001626694        0       0                NaN                &lt;NA&gt;
+## 3 0.0001589566  1672143 1661686          0.5015683             #407abb
+## 4 0.0001567365   420328  757405          0.3568958             #c03735
+## 5 0.0001810832 11109764 6005961          0.6490969             #407abb
+## 6 0.0004561765  1804352 1364607          0.5693832             #407abb
+##   health_cost_per_captia
+## 1                   7281
+## 2                  11064
+## 3                   6452
+## 4                   7408
+## 5                   7549
+## 6                   6804</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Merge new data frame: death_per_100 with covid_state data</li>
 </ol>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="data-transformation.html#cb10-1"></a>death_per_<span class="dv">100</span> =<span class="st"> </span>covid_merge_all <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb10-2"><a href="data-transformation.html#cb10-2"></a><span class="st">  </span><span class="kw">group_by</span>(<span class="st">`</span><span class="dt">state</span><span class="st">`</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb10-3"><a href="data-transformation.html#cb10-3"></a><span class="st">  </span><span class="kw">summarize</span>(</span>
-<span id="cb10-4"><a href="data-transformation.html#cb10-4"></a>    <span class="st">`</span><span class="dt">death_Nov_30</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(death_Nov_<span class="dv">30</span>),</span>
-<span id="cb10-5"><a href="data-transformation.html#cb10-5"></a>    <span class="st">`</span><span class="dt">population</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(population),</span>
-<span id="cb10-6"><a href="data-transformation.html#cb10-6"></a>    <span class="st">`</span><span class="dt">death_per_100</span><span class="st">`</span> =<span class="st"> `</span><span class="dt">death_Nov_30</span><span class="st">`</span><span class="op">/</span><span class="st">`</span><span class="dt">population</span><span class="st">`</span><span class="op">*</span><span class="dv">100</span>) <span class="op">%&gt;%</span></span>
-<span id="cb10-7"><a href="data-transformation.html#cb10-7"></a><span class="st">  </span><span class="kw">select</span>(<span class="st">`</span><span class="dt">state</span><span class="st">`</span>, <span class="st">`</span><span class="dt">death_per_100</span><span class="st">`</span>)</span>
-<span id="cb10-8"><a href="data-transformation.html#cb10-8"></a>covid_state =<span class="st"> </span><span class="kw">merge</span>(covid_state, death_per_<span class="dv">100</span>, <span class="dt">by=</span><span class="st">&#39;state&#39;</span>)</span>
-<span id="cb10-9"><a href="data-transformation.html#cb10-9"></a>covid_state<span class="op">$</span>death_per_1M =<span class="st"> </span>covid_state<span class="op">$</span>death_per_<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="dv">10000</span></span>
-<span id="cb10-10"><a href="data-transformation.html#cb10-10"></a><span class="kw">head</span>(covid_state)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">death_per_<span class="dv">100</span> =<span class="st"> </span>covid_merge_all <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(<span class="st">`</span><span class="dt">state</span><span class="st">`</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="st">  </span><span class="kw">summarize</span>(</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">    <span class="st">`</span><span class="dt">death_Nov_30</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(death_Nov_<span class="dv">30</span>),</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">    <span class="st">`</span><span class="dt">population</span><span class="st">`</span> =<span class="st"> </span><span class="kw">sum</span>(population),</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">    <span class="st">`</span><span class="dt">death_per_100</span><span class="st">`</span> =<span class="st"> `</span><span class="dt">death_Nov_30</span><span class="st">`</span><span class="op">/</span><span class="st">`</span><span class="dt">population</span><span class="st">`</span><span class="op">*</span><span class="dv">100</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="st">  </span><span class="kw">select</span>(<span class="st">`</span><span class="dt">state</span><span class="st">`</span>, <span class="st">`</span><span class="dt">death_per_100</span><span class="st">`</span>)</a>
+<a class="sourceLine" id="cb15-8" data-line-number="8">covid_state =<span class="st"> </span><span class="kw">merge</span>(covid_state, death_per_<span class="dv">100</span>, <span class="dt">by=</span><span class="st">&#39;state&#39;</span>)</a>
+<a class="sourceLine" id="cb15-9" data-line-number="9">covid_state<span class="op">$</span>death_per_1M =<span class="st"> </span>covid_state<span class="op">$</span>death_per_<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="dv">10000</span></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="kw">head</span>(covid_state)</a></code></pre></div>
 <pre><code>##        state confirmed_Nov_30 death_Nov_30 population confirmed_rate
 ## 1    Alabama           249524         3578    4903185     0.05089019
 ## 2     Alaska            32418          121     731545     0.04431443
@@ -376,20 +495,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4   Arkansas           154865         2502    3017804     0.05131712
 ## 5 California          1230264        19173   39512223     0.03113629
 ## 6   Colorado           232878         3037    5758736     0.04043908
-##    death_rate    Biden   Trump Biden Support Rate Support Which Party  2014
-## 1 0.014339302   849648 1441168          0.3708932          Republican  7281
-## 2 0.003732494        0       0                NaN                &lt;NA&gt; 11064
-## 3 0.020314121  1672143 1661686          0.5015683          Democratic  6452
-## 4 0.016156007   420328  757405          0.3568958          Republican  7408
-## 5 0.015584460 11109764 6005961          0.6490969          Democratic  7549
-## 6 0.013041163  1804352 1364607          0.5693832          Democratic  6804
-##   death_per_100 death_per_1M
-## 1    0.07297298     729.7298
-## 2    0.01654034     165.4034
-## 3    0.09121113     912.1113
-## 4    0.08290797     829.0797
-## 5    0.04852423     485.2423
-## 6    0.05273727     527.3727</code></pre>
+##    death_rate    Biden   Trump Biden Support Rate Support Which Party
+## 1 0.014339302   849648 1441168          0.3708932          Republican
+## 2 0.003732494        0       0                NaN                &lt;NA&gt;
+## 3 0.020314121  1672143 1661686          0.5015683          Democratic
+## 4 0.016156007   420328  757405          0.3568958          Republican
+## 5 0.015584460 11109764 6005961          0.6490969          Democratic
+## 6 0.013041163  1804352 1364607          0.5693832          Democratic
+##   health_cost_per_captia death_per_100 death_per_1M
+## 1                   7281    0.07297298     729.7298
+## 2                  11064    0.01654034     165.4034
+## 3                   6452    0.09121113     912.1113
+## 4                   7408    0.08290797     829.0797
+## 5                   7549    0.04852423     485.2423
+## 6                   6804    0.05273727     527.3727</code></pre>
 <p>We create a new column: death per 100 by calculating the death case divided by population.</p>
 
 </div>

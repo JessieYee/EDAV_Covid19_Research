@@ -50,7 +50,6 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
 
@@ -87,7 +86,14 @@
 <li class="chapter" data-level="4.1" data-path="missing-values.html"><a href="missing-values.html#checking-missing-value"><i class="fa fa-check"></i><b>4.1</b> Checking missing value</a></li>
 <li class="chapter" data-level="4.2" data-path="missing-values.html"><a href="missing-values.html#fixing-the-na-in-dataset"><i class="fa fa-check"></i><b>4.2</b> Fixing the NA in dataset</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
+<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a><ul>
+<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#obtain-the-covid-data-time-series-data"><i class="fa fa-check"></i><b>5.1</b> Obtain the Covid Data &amp; Time Series Data</a></li>
+<li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#time-series-plots-for-state-covid-confirmed-and-death-cases"><i class="fa fa-check"></i><b>5.2</b> Time Series Plots for State Covid Confirmed and Death Cases</a></li>
+<li class="chapter" data-level="5.3" data-path="results.html"><a href="results.html#time-series-plots-for-state-covid-confirmed-rate-and-death-rate"><i class="fa fa-check"></i><b>5.3</b> Time Series Plots for State Covid Confirmed Rate and Death Rate</a></li>
+<li class="chapter" data-level="5.4" data-path="results.html"><a href="results.html#are-cities-more-vulnerable"><i class="fa fa-check"></i><b>5.4</b> Are Cities more Vulnerable?</a></li>
+<li class="chapter" data-level="5.5" data-path="results.html"><a href="results.html#covid-election-health-expenditure"><i class="fa fa-check"></i><b>5.5</b> Covid &amp; Election &amp; Health Expenditure</a></li>
+<li class="chapter" data-level="5.6" data-path="results.html"><a href="results.html#plot-election-map"><i class="fa fa-check"></i><b>5.6</b> Plot Election Map</a></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a><ul>
 <li class="chapter" data-level="7.0.1" data-path="conclusion.html"><a href="conclusion.html#the-team"><i class="fa fa-check"></i><b>7.0.1</b> 1. The Team</a></li>
@@ -123,16 +129,28 @@
 <h1><span class="header-section-number">Chapter 4</span> Missing values</h1>
 <div id="checking-missing-value" class="section level2">
 <h2><span class="header-section-number">4.1</span> Checking missing value</h2>
-<p>We want to check if there is any missing value in our covid_state data set</p>
+<p>We want to check if there is any missing value in our covid_state and confirmed_d3 data set.</p>
 <pre><code>##                  state confirmed_Nov_30 death_Nov_30 population confirmed_rate
 ## 2               Alaska            32418          121     731545     0.04431443
 ## 9 District of Columbia            21552          680     705749     0.03053777
-##    death_rate Biden Trump Biden Support Rate Support Which Party  2014
-## 2 0.003732494     0     0                NaN                &lt;NA&gt; 11064
-## 9 0.031551596     0     0                NaN                &lt;NA&gt; 11944
-##   death_per_100 death_per_1M
-## 2    0.01654034     165.4034
-## 9    0.09635154     963.5154</code></pre>
+##    death_rate Biden Trump Biden Support Rate Support Which Party
+## 2 0.003732494     0     0                NaN                &lt;NA&gt;
+## 9 0.031551596     0     0                NaN                &lt;NA&gt;
+##   health_cost_per_captia death_per_100 death_per_1M
+## 2                  11064    0.01654034     165.4034
+## 9                  11944    0.09635154     963.5154</code></pre>
+<pre><code>##   state confirmed_Nov_30 confirmed_Sep_30 confirmed_July_30 confirmed_May_30
+## 2    AK            32576             8845              3605              455
+## 9  &lt;NA&gt;            21552            15326             12057             8717
+##   confirmed_Mar_30 population   Nov_rate   Sep_rate   July_rate     May_rate
+## 2              119     731545 0.04453041 0.01209085 0.004927927 0.0006219713
+## 9              401     705749 0.03053777 0.02171594 0.017083977 0.0123514167
+##     March_rate Biden Trump Biden Support Rate Support Which Party
+## 2 0.0001626694     0     0                NaN                &lt;NA&gt;
+## 9 0.0005681907     0     0                NaN                &lt;NA&gt;
+##   health_cost_per_captia
+## 2                  11064
+## 9                  11944</code></pre>
 <p>We can find that Alaska and D.C have NA value for <code>support biden rate</code> variable. The county name for election data in D.C and Alaska are different from the covid_19 data. So we might loosing data when merging them together.</p>
 </div>
 <div id="fixing-the-na-in-dataset" class="section level2">
@@ -145,20 +163,20 @@
 ## 4   Arkansas           154865         2502    3017804     0.05131712
 ## 5 California          1230264        19173   39512223     0.03113629
 ## 6   Colorado           232878         3037    5758736     0.04043908
-##    death_rate    Biden   Trump Biden Support Rate Support Which Party  2014
-## 1 0.014339302   849648 1441168          0.3708932          Republican  7281
-## 2 0.003732494   153405  189892          0.4468580          Republican 11064
-## 3 0.020314121  1672143 1661686          0.5015683          Democratic  6452
-## 4 0.016156007   420328  757405          0.3568958          Republican  7408
-## 5 0.015584460 11109764 6005961          0.6490969          Democratic  7549
-## 6 0.013041163  1804352 1364607          0.5693832          Democratic  6804
-##   death_per_100 death_per_1M
-## 1    0.07297298     729.7298
-## 2    0.01654034     165.4034
-## 3    0.09121113     912.1113
-## 4    0.08290797     829.0797
-## 5    0.04852423     485.2423
-## 6    0.05273727     527.3727</code></pre>
+##    death_rate    Biden   Trump Biden Support Rate Support Which Party
+## 1 0.014339302   849648 1441168          0.3708932          Republican
+## 2 0.003732494   153405  189892          0.4468580          Republican
+## 3 0.020314121  1672143 1661686          0.5015683          Democratic
+## 4 0.016156007   420328  757405          0.3568958          Republican
+## 5 0.015584460 11109764 6005961          0.6490969          Democratic
+## 6 0.013041163  1804352 1364607          0.5693832          Democratic
+##   health_cost_per_captia death_per_100 death_per_1M
+## 1                   7281    0.07297298     729.7298
+## 2                  11064    0.01654034     165.4034
+## 3                   6452    0.09121113     912.1113
+## 4                   7408    0.08290797     829.0797
+## 5                   7549    0.04852423     485.2423
+## 6                   6804    0.05273727     527.3727</code></pre>
 
 </div>
 </div>
