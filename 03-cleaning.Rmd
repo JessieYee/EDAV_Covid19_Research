@@ -90,9 +90,9 @@ covid_merged = covid_merged[covid_merged['population']!=0,]
 head(covid_merged)
 ```
 
-We want to find the relationship between covid_19 and election through time. So, we select covid_19 data on March, May, July, September and November.
+We want to find the relationship between covid_19 and election through time. So, we generate new dataframe confirmed_d3 and confirmed_TS.
 
-```{r}
+```{r echo = TRUE}
 transform_confirmed_d3 <- function(df) {
   info_col = df[,c("UID","Admin2","Province_State","Lat","Long_")]
   dates = df[,c("X3.30.20","X5.30.20","X7.30.20","X9.30.20","X11.30.20")]
@@ -115,8 +115,16 @@ confirmed_d3$cr5 = confirmed_d3$X5.30.20/confirmed_d3$Population
 confirmed_d3$cr7 = confirmed_d3$X7.30.20/confirmed_d3$Population
 confirmed_d3$cr9 = confirmed_d3$X9.30.20/confirmed_d3$Population
 confirmed_d3$cr11 = confirmed_d3$X11.30.20/confirmed_d3$Population
+head(confirmed_d3)
 ```
-
+```{r echo = TRUE}
+confirmed_TS <- confirmed_df %>% select(Combined_Key,UID,Province_State, c(`X1.22.20`:`X11.30.20`)) 
+death_TS <- death_df %>% select(Combined_Key, UID,Province_State, Population, c(`X1.22.20`:`X11.30.20`))
+confirmed_TS_merge = merge(confirmed_df, death_df%>%select(UID, Population), by = "UID")
+confirmed_TS_merge = confirmed_TS_merge[confirmed_TS_merge['Population'] != 0, ]
+head(confirmed_TS)
+head(death_TS)
+```
 
 
 
@@ -172,7 +180,7 @@ We separate the votes to two groups: support Democratic Party and support Republ
 
 2. Merge election data with confirmed_d3 dataset
 
-```{r}
+```{r echo = TRUE}
 confirmed_d3_all <- merge(confirmed_d3, election, by=c("state","county"),all.x = TRUE,all.y = FALSE)
 
 confirmed_d3 = confirmed_d3_all %>% 
@@ -223,4 +231,8 @@ We create a new column: death per 100 by calculating the death case divided by p
 saveRDS(covid_state, file = "covid_state")
 saveRDS(election, file = "election")
 saveRDS(confirmed_d3,file = "confirmed_d3")
+saveRDS(confirmed_TS, file = "confirmed_TS")
+saveRDS(death_TS, file="death_TS")
+saveRDS(covid_merge_all, file="covid_merge_all")
+saveRDS(confirmed_TS_merge,file = "confirmed_TS_merge")
 ```

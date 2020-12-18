@@ -1,1 +1,309 @@
 # Results
+````{r include=FALSE}
+library(easypackages)
+library (ggplot2)
+library(plotly)
+library(maps)
+library(ggthemes)
+library(mapproj)
+library(scales)
+libraries('tidyverse')
+libraries('robotstxt','rvest')
+libraries('RCurl', 'readxl','stringr', "scales")
+````
+
+## Obtain the Covid Data & Time Series Data 
+
+we load the confirmed_TS and death_TS dataset which we prepared in the previous part
+
+```{r}
+confirmed_TS = readRDS("confirmed_TS")
+death_TS = readRDS("death_TS")
+covid_state = readRDS("covid_state")
+covid_merge_all = readRDS("covid_merge_all")
+confirmed_TS_merge = readRDS("confirmed_TS_merge")
+head(confirmed_TS)
+head(death_TS)
+```
+## Time Series Plot for State Covid Confirmed and Death Cases 
+
+```{r, warning=FALSE, message=FALSE} 
+get_confirmed_num_TS <- function(confirmed_TS) {
+  state_confirmed_TS = confirmed_TS %>% 
+  group_by(Province_State) %>%
+  summarise(across(starts_with("X"), sum, .names = "state_{.col}"))
+  
+  confirmed_num_TS <- state_confirmed_TS %>% 
+  pivot_longer(cols = starts_with("state"),
+   names_to = "Date",
+   values_to = "Confirmed_cases")
+  
+  confirmed_num_TS$Date = gsub('state_X', '', confirmed_num_TS$Date)
+  
+  return(confirmed_num_TS)
+}
+
+confirmed_num_TS = get_confirmed_num_TS(confirmed_TS)
+
+# plot confirmed num by state 
+plot_ly(x = fct_inorder(confirmed_num_TS$Date), 
+        y = confirmed_num_TS$Confirmed_cases, 
+        type = 'scatter', mode = 'lines', 
+        color = confirmed_num_TS$Province_State) %>% 
+        layout(title = "State Confirmed Cases Time Series Data")
+
+#--------------------------------------------
+get_death_num_TS <- function(death_TS) {
+  state_death_TS = death_TS %>% 
+  group_by(Province_State) %>%
+  summarise(across(starts_with("X"), sum, .names = "state_{.col}"))
+
+  death_num_TS <- state_death_TS %>% 
+    pivot_longer(cols = starts_with("state"),
+     names_to = "Date",
+     values_to = "Confirmed_cases")
+  death_num_TS$Date = gsub('state_X', '', death_num_TS$Date)
+  return(death_num_TS)
+}
+
+death_num_TS = get_death_num_TS(death_TS)
+# plot death num by state 
+plot_ly(x = fct_inorder(death_num_TS$Date), 
+        y = death_num_TS$Confirmed_cases, 
+        type = 'scatter', mode = 'lines', 
+        color = death_num_TS$Province_State) %>% 
+        layout(title = "State Death Cases Time Series Data")
+```
+
+## Time Series Plot for State Covid Confirmed and Death Rate 
+
+```{r, warning=FALSE, message=FALSE} 
+
+get_confirmed_rate_TS <- function(confirmed_TS_merge) {
+  state_confirmed_TS = confirmed_TS_merge %>%
+  group_by(Province_State) %>%
+  summarise(across(starts_with("X"), sum, .names = "state_{.col}"),
+            state_population = sum(Population))
+
+  state_confirmed_TS_rate <- cbind(state_confirmed_TS$Province_State, (state_confirmed_TS %>%select(starts_with("state_X")))/(state_confirmed_TS$state_population))
+
+  colnames(state_confirmed_TS_rate)[1] <- "Province_State"
+
+  confirmed_rate_TS <- state_confirmed_TS_rate %>%
+  pivot_longer(cols = starts_with("state"),
+   names_to = "Date",
+   values_to = "Confirmed_rate")
+
+  confirmed_rate_TS$Date = gsub('state_X', '', confirmed_rate_TS$Date)
+  return(confirmed_rate_TS)
+}
+# plot d num by state
+confirmed_rate_TS = get_confirmed_rate_TS(confirmed_TS_merge)
+
+plot_ly(x = fct_inorder(confirmed_rate_TS$Date),
+        y = confirmed_rate_TS$Confirmed_rate,
+        type = 'scatter', mode = 'lines',
+        color = confirmed_rate_TS$Province_State) %>%
+        layout(title = "State Confirmed Rate Time Series Data")
+
+## ----------------------------------------------
+# Death rate
+get_death_rate_TS <- function(death_TS) {
+  state_death_TS = death_TS %>% 
+  group_by(Province_State) %>%
+  summarise(state_population = sum(Population),
+            across(starts_with("X"), sum, .names = "state_{.col}"))
+  
+  state_death_TS_rate <- cbind(state_death_TS$Province_State, (state_death_TS %>%select(starts_with("state_X")))/(state_death_TS$state_population))
+colnames(state_death_TS_rate)[1] <- "Province_State"
+
+reverse_state_death_TS <- state_death_TS_rate %>% 
+  pivot_longer(cols = starts_with("state"),
+   names_to = "Date",
+   values_to = "Death_rate")
+
+return(reverse_state_death_TS)
+}
+
+death_rate_TS = get_death_rate_TS(death_TS)
+
+plot_ly(x = fct_inorder(death_rate_TS$Date),
+        y = death_rate_TS$Death_rate, 
+        type = 'scatter', mode = 'lines', 
+        color = death_rate_TS$Province_State) %>% 
+        layout(title = "State Death Rate Time Series Data")
+```
+
+## Are Cities more Vulnerable?
+
+Due to the fact that Covid-19 spreads fast in the area where lots of people are gathering, some may believe that cities are more vulnerable than the rural areas. We want to verify the validity of this claim. Here, we assume that counties with large population size are "cities" and others are "rural areas".
+
+```{r, warning=FALSE, message=FALSE}
+ggplot(covid_merge_all) +
+  geom_point(aes(x=population, y=confirmed_rate),alpha=0.4) + 
+  scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6)) + 
+  scale_y_continuous(labels = scales::percent) + 
+  ylab("Confirmed Rate") + xlab("Population") + 
+  ggtitle("Population v.s. Confirmed Rate") + 
+  theme(plot.title = element_text(face = "bold"))
+
+```
+
+We see that for counties with large population, the confirmed rates are not relatively high. For instance, the Los Angeles County (the one near the right verge) has over 10M population, but the confirmed rate is actually relatively low. Some counties have very low confirmed rate and others have a confirm rate of over 10%, but these counties all have very small population. Thus we suspect that the distribution shown is a result of high variability. But due to the overlaps, we are not entirely sure from this graph how well large population counties do compare to small population counties. Thus we define large population counties to be those counties with over 1M people. Then we draw a boxplot faceted by population size.
+
+```{r, warning=FALSE, message=FALSE}
+covid_merge_all$pop_size = ifelse(covid_merge_all$population>1000000, 'large population', 'small population')
+ggplot(covid_merge_all) + 
+  geom_boxplot(aes(x=`pop_size`,y=confirmed_rate, fill=`pop_size`), color='grey20', varwidth=TRUE) +
+  ggtitle('Death Per 1M Citizens by Party')+
+  labs(x='Counties', y='Confirmed Rate') +
+  theme(plot.title = element_text(face = "bold")) + 
+  scale_fill_manual(values=c("#eb776c", "#2eb7bd")) +
+  scale_y_continuous(labels = scales::percent)
+```
+
+Here is much clearer that cities are not more vulnerable. So what shapes our perception is probably due to the fact that these places have more people to begin with. We might want to report an area which has a high number of confirmed cases, but it does not mean that it is easier to get infected there.
+
+## Data Visualization for Static Covid Data on Nov 30th & Health Spending Data & Election Data
+
+```{r, warning=FALSE, message=FALSE}
+# boxplot; confirmed rate faceted by party 
+ggplot(covid_state) + 
+  geom_boxplot(aes(x=`Support Which Party`,y=confirmed_rate, fill=`Support Which Party`), color='black', varwidth=TRUE) +
+  ggtitle('Confirmed Rate By Party')+
+  labs(x='Party', y='Confirmed Rate') +
+  theme(plot.title = element_text(face = "bold")) + 
+  scale_fill_manual(values=c("#407abb", "#c03735")) + 
+  scale_y_continuous(labels = scales::percent)
+
+
+ggplot(covid_state) + 
+  geom_boxplot(aes(x=`Support Which Party`,y=death_per_1M, fill=`Support Which Party`), color='black', varwidth=TRUE) +
+  ggtitle('Death Per 1M Citizens by Party')+
+  labs(x='Party', y='Death per 1M') +
+  theme(plot.title = element_text(face = "bold")) + 
+  scale_fill_manual(values=c("#407abb", "#c03735"))
+
+```
+
+From the first boxplot, there is clear evidence that on average, the states that vote for the Republican Party has a higher confirmed rate than those who vote for the Democratic Party. The median confirmed rate for a democratic state is approximately 3.0%, whereas for a Republican State, the median jumps to around 5.0%. 
+
+The one outlier within the Democratic state is shown here:
+`
+```{r, warning=FALSE}
+covid_state %>% filter(`Support Which Party` == "Democratic") %>% arrange(desc(confirmed_rate)) %>% head(1) %>% 
+   select('state', 'confirmed_rate', 'Biden Support Rate')
+```
+
+
+Notice that even Wisconsin is a "Democratic" state, it is fairly divided. A state is "Democratic" as long as more than 50% of the votes goes to Biden. It could be 51% or 80%. We hypothesize that the support rate does make a difference. Namely, we suggest if a population resonates more with Trump, then it would potentially suffer from a higher confirmed rate.                
+
+```{r, warning=FALSE, message=FALSE}
+# Biden Support Rate v.s. covid confirmed
+tidy_state = covid_state %>% 
+  select(`state`, `confirmed_rate`, `Biden Support Rate`) %>% 
+  gather(key='rate type', value='rate', -state)
+
+tidy_state$state = factor(tidy_state$state)
+
+ggplot(tidy_state,aes(x=rate, y=fct_reorder2(state, `rate type`=="confirmed_rate", rate, .desc = FALSE))) + 
+  geom_point(aes(color=`rate type`)) + 
+  ggtitle("State Covid Confirmed Rate v.s. Biden Support Rate") + 
+  scale_color_manual(values=c("#00bfc4", "#f8766d")) + 
+  scale_x_continuous(labels = scales::percent) +
+  xlab("Rate") + ylab("State") + 
+  theme_grey() + 
+  theme(plot.title = element_text(face = "bold"))
+
+# loess model
+# Confirmed vs Election
+ggplot(covid_state, aes(`confirmed_rate`, `Biden Support Rate`), na.rm = TRUE) + 
+  geom_point(na.rm = TRUE) + 
+  geom_line(color = "grey50",na.rm = TRUE) +
+  geom_smooth(method = "loess", se = FALSE, lwd =1.5) + 
+  ggtitle("Loess Smoother") + 
+  theme(plot.title = element_text(face = "bold"))
+```
+
+It looks like there is a negative association between Covid-19 confirmed rate and Biden Support Rate from the first plot. Biden seems to earn less support in the states where the covid confirmed rate is higher. We would like to explore this relationship a little bit more using a scatter plot. Specifically, we would like to see how the difference in support rate correlates with the confirm rate. 
+
+```{r, warning=FALSE, message=FALSE}
+# support difference v.s. covid_confirmed
+elect_covid = covid_state%>%
+  summarise(state = state,
+            diff = (0.5-`Biden Support Rate`)*2,
+            confirm = confirmed_rate,
+            death = death_rate,
+            population = population)
+
+ggplot(elect_covid, aes(x = diff, y = confirm)) + 
+  geom_point(aes(size = population, color = diff))+
+  scale_color_gradient2(midpoint = 0, low = "blue", mid = "white",
+                            high = "red", space = "Lab" ) + 
+  scale_y_continuous(labels = scales::percent) +
+  scale_x_continuous(labels = scales::percent) +
+  theme(panel.background = element_rect(fill = "grey70", color  =  NA)) +
+  xlab('Difference in Support Rate') + ylab("Confirmed Rate") + 
+  ggtitle("Difference in Support Rate v.s. Confirmed Rate") + 
+  theme(plot.title = element_text(face = "bold"))
+
+```
+
+In this plot, the higher the `Difference of Support Rate` or the closer the dot is to the right verge, the more the state leans towards Trump. For example, if `x=-50%`, then 75% of the votes went to Biden and 25% of the votes went to Trump. The divergent color scale just made the graph easily interpretable. 
+
+Here we can see much clearer that higher Trump support rates tends to associate with higher confirmed rates. Most states with a confirm rate higher than 5% lean towards trump, whereas all of the states with a confirm rate below 2.5% lean towards Biden. 
+
+Another interesting non-covid related observation is that there seems to be a negative association between population size and unifiedness. In other words, the higher the population, the more likely that the state is divided, which makes sense.
+
+Now what about death rate, is there a visible relationship between that and the political affiliation? 
+
+```{r, warning=FALSE, message=FALSE}
+# covid Death per 100 v.s. Biden Support Rate 
+tidy_state = covid_state %>% 
+  select(`state`, `death_per_100`, `Biden Support Rate`) %>% 
+  gather(key='rate type', value='rate', -state)
+
+tidy_state$state = factor(tidy_state$state)
+
+ggplot(tidy_state,aes(x=rate, y=fct_reorder2(state, `rate type`=="death_per_100", rate, .desc = FALSE))) + 
+  geom_point(aes(color=`rate type`)) + 
+  scale_color_manual(values=c("#00bfc4", "black")) + 
+  ggtitle("State Death Per 100 v.s. Biden Support Rate") + 
+  xlab("Value") + ylab("State") + 
+  theme_grey()
+```
+
+Here it doesn't seem that there is a relationship between election results and Covid-19 death rate. This 
+
+## Plot election map
+```{r, warning=FALSE, message=FALSE}
+us_states <- map_data("state")
+head(us_states)
+
+#Add party column for election map
+covid_state$diff <- (0.5-covid_state$`Biden Support Rate`)*200
+covid_state$state <- tolower(covid_state$state)
+
+election$region <- tolower(election$state)
+us_states_elec <- merge(us_states, covid_state, by.x='region', by.y='state')
+# us_states_elec$party <- ifelse(us_states_elec$Biden>us_states_elec$Trump, "Biden","Trump")
+party_colors <- c("#2E74C0", "#CB454A") 
+
+#Trump Vote
+ggplot(data = us_states_elec,mapping = aes(x = long, y = lat, group = group, fill = diff)) +
+      geom_polygon(color = "gray90", size = 0.1) + coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
+      labs(title = "Biden Support Rate") + theme_map() + labs(fill ="Percent") + 
+      scale_fill_gradient2(midpoint = 0, low = "#0072B2", mid = "white",
+                            high = "red4", space = "Lab" ) + 
+      labs(title = "Support Rate Difference") +  
+      theme_map() + labs(fill = "Percent")
+
+
+ggplot(data = us_states_elec,mapping = aes(x = long, y = lat, group = group, fill = confirmed_rate)) +
+      geom_polygon(color = "gray90", size = 0.1) + coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
+      labs(title = "Biden Support Rate") + theme_map() + labs(fill ="Percent") + 
+      scale_fill_gradient(low='white', high='black', labels=percent) + 
+      labs(title = "Confirmed Rate") +  
+      theme_map() + labs(fill = "Percent")
+
+
