@@ -90,6 +90,36 @@ covid_merged = covid_merged[covid_merged['population']!=0,]
 head(covid_merged)
 ```
 
+We want to find the relationship between covid_19 and election through time. So, we select covid_19 data on March, May, July, September and November.
+
+```{r}
+transform_confirmed_d3 <- function(df) {
+  info_col = df[,c("UID","Admin2","Province_State","Lat","Long_")]
+  dates = df[,c("X3.30.20","X5.30.20","X7.30.20","X9.30.20","X11.30.20")]
+  df = cbind(info_col, dates)
+  # rename columns 
+  ColName = c("UID","county","state","lat", "long")
+  for (i in 1:5){
+    names(df)[i] = paste(ColName[i])
+  }
+  return(df)
+}
+
+confirmed_d3 = transform_confirmed_d3(confirmed_df)
+subdeath = subset(death_df,select = c("UID","Population"))
+confirmed_d3 = merge(confirmed_d3,subdeath, by="UID")
+
+# cr means confirmed rate 
+confirmed_d3$cr3 = confirmed_d3$X3.30.20/confirmed_d3$Population
+confirmed_d3$cr5 = confirmed_d3$X5.30.20/confirmed_d3$Population
+confirmed_d3$cr7 = confirmed_d3$X7.30.20/confirmed_d3$Population
+confirmed_d3$cr9 = confirmed_d3$X9.30.20/confirmed_d3$Population
+confirmed_d3$cr11 = confirmed_d3$X11.30.20/confirmed_d3$Population
+```
+
+
+
+
 ## election data
 
 The last dataset we want to consider is the 2020 election data in USA. 
@@ -138,7 +168,38 @@ covid_state <- covid_state %>%
 covid_state = merge(covid_state, health_data, by = "state")
 head(covid_state)
 ```
-We separate the votes to two groups: support Democratic Party and support Republican Party by checking the `Biden Support Rate`. 
+We separate the votes to two groups: support Democratic Party and support Republican Party by checking the `Biden Support Rate`.
+
+2. Merge election data with confirmed_d3 dataset
+
+```{r}
+confirmed_d3_all <- merge(confirmed_d3, election, by=c("state","county"),all.x = TRUE,all.y = FALSE)
+
+confirmed_d3 = confirmed_d3_all %>% 
+  group_by(`state`) %>% 
+  summarize(`confirmed_Nov_30` = sum(X11.30.20),
+            `confirmed_Sep_30` = sum(X9.30.20),
+            `confirmed_July_30` = sum(X7.30.20),
+            `confirmed_May_30` = sum(X5.30.20),
+            `confirmed_Mar_30` = sum(X3.30.20),
+            `population` = sum(Population),
+            `Nov_rate` =`confirmed_Nov_30`/ `population`,
+            `Sep_rate` =`confirmed_Sep_30`/ `population`,
+            `July_rate` =`confirmed_July_30`/ `population`,
+            `May_rate` =`confirmed_May_30`/ `population`,
+            `March_rate` =`confirmed_Mar_30`/ `population`,
+            `Biden` = sum(Biden,na.rm=TRUE),
+            `Trump` = sum(Trump,na.rm=TRUE),
+            `Biden Support Rate` = `Biden`/(`Biden` + `Trump`),
+  )
+
+confirmed_d3 <- confirmed_d3 %>% 
+  mutate(`Support Which Party` = case_when(confirmed_d3$`Biden Support Rate` > 0.5 ~ "Democratic", 
+                                           confirmed_d3$`Biden Support Rate` < 0.5 ~ "Republican"
+  ))
+confirmed_d3 = merge(confirmed_d3, health_data, by = "state")
+head(confirmed_d3)
+```
 
 2. Merge new data frame: death_per_100 with covid_state data
 ```{r echo = TRUE}
@@ -159,4 +220,5 @@ We create a new column: death per 100 by calculating the death case divided by p
 ```{r}
 saveRDS(covid_state, file = "covid_state")
 saveRDS(election, file = "election")
+saveRDS(confirmed_d3,file = "confirmed_d3")
 ```
