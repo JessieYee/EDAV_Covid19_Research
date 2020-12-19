@@ -24,7 +24,7 @@
 <meta name="author" content="Xiaoyu Su, Jiongxin Ye, Hanxiao Zhang, Lei Guo" />
 
 
-<meta name="date" content="2020-12-17" />
+<meta name="date" content="2020-12-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,6 +50,7 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
 
@@ -95,17 +96,7 @@
 <li class="chapter" data-level="5.6" data-path="results.html"><a href="results.html#plot-election-map"><i class="fa fa-check"></i><b>5.6</b> Plot Election Map</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
-<li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a><ul>
-<li class="chapter" data-level="7.0.1" data-path="conclusion.html"><a href="conclusion.html#the-team"><i class="fa fa-check"></i><b>7.0.1</b> 1. The Team</a></li>
-<li class="chapter" data-level="7.0.2" data-path="conclusion.html"><a href="conclusion.html#the-questions"><i class="fa fa-check"></i><b>7.0.2</b> 2. The Questions</a></li>
-<li class="chapter" data-level="7.0.3" data-path="conclusion.html"><a href="conclusion.html#github-repo"><i class="fa fa-check"></i><b>7.0.3</b> 3. GitHub repo</a></li>
-<li class="chapter" data-level="7.0.4" data-path="conclusion.html"><a href="conclusion.html#data-sources-1"><i class="fa fa-check"></i><b>7.0.4</b> 4. Data Sources</a></li>
-<li class="chapter" data-level="7.0.5" data-path="conclusion.html"><a href="conclusion.html#covid-19-datasets-1"><i class="fa fa-check"></i><b>7.0.5</b> 4.1 Covid-19 Datasets</a></li>
-<li class="chapter" data-level="7.0.6" data-path="conclusion.html"><a href="conclusion.html#election-data-1"><i class="fa fa-check"></i><b>7.0.6</b> 4.2 2020 Election Data</a></li>
-<li class="chapter" data-level="7.0.7" data-path="conclusion.html"><a href="conclusion.html#us-state-and-local-government-finances-data"><i class="fa fa-check"></i><b>7.0.7</b> 4.3 2018 US State and Local Government Finances Data</a></li>
-<li class="chapter" data-level="7.0.8" data-path="conclusion.html"><a href="conclusion.html#data-transformation-1"><i class="fa fa-check"></i><b>7.0.8</b> 5. Data Transformation</a></li>
-<li class="chapter" data-level="7.0.9" data-path="conclusion.html"><a href="conclusion.html#missing-values-1"><i class="fa fa-check"></i><b>7.0.9</b> 6. Missing Values</a></li>
-</ul></li>
+<li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -146,7 +137,7 @@ The dataset is downloaded from the JHU CSSE COVID-19 Dataset github repository, 
 ## 4 -87.12511    Bibb, Alabama, US        0
 ## 5 -86.56791  Blount, Alabama, US        0
 ## 6 -85.71266 Bullock, Alabama, US        0</code></pre>
-<pre><code>## [1] 3340  341</code></pre>
+<pre><code>## [1] 3340  343</code></pre>
 <p>To summarize, the dataset contains 3340 rows and 316 columns. We can see that the dataset contains some repetitive information and some ids not useful for our tasks. We can consider dropping those columns. The good thing about this dataset is that it does not contain any missing values.</p>
 <p>The first 10 columns contain information that identify a specific county and all the other columns contain the total confirmed cases up until a specific date.
 We summarize the description of the useful columns and their data types below:</p>
